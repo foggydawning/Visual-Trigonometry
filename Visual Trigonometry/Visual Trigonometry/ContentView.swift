@@ -8,40 +8,33 @@
 import SwiftUI
 
 struct ContentView: View {
-    
-    let spacer_20 = Spacer(minLength: UIScreen.main.bounds.height/20)
-    
     var body: some View {
-        HStack{
-            Spacer(minLength: 15)
-            VStack(alignment: .center){
-                Spacer().frame(height: 25.0)
-                ZStack{
-                    Trigonometry_view()
+        GeometryReader{ geometry in
+            HStack{
+                Spacer(minLength: geometry.size.width*0.025)
+                VStack(alignment: .center){
+                    Spacer().frame(height: 25.0)
+                    Trigonometry_view(size: geometry.size.width*0.95).background(Color.red)
+                    Spacer(minLength: geometry.size.height - geometry.size.width*0.95 - 25.0)
                 }
-                Spacer()
+                Spacer(minLength: geometry.size.width*0.025)
             }
-            Spacer(minLength: 15)
         }
+        
     }
 }
 
 struct Trigonometry_view: View{
-    var width: CGFloat = UIScreen.main.bounds.width - 30
-    var height: CGFloat {
-        width
-    }
+    var size: CGFloat
     var center: CGPoint {
-        CGPoint(x: width/2, y: height/2)
+        CGPoint(x: size/2, y: size/2)
     }
-    
     var body: some View{
         ZStack{
-            CoordunateSystem(width: width, center: center)
-            Circle(radius: width/2, center: center)
+            CoordunateSystem(size: size, center: center)
+            Circle(radius: size/2, center: center)
                 .stroke(lineWidth: 4)
-                .frame(alignment: .center)
-                .frame(width: width, height: height, alignment: .center)
+                .fill(Color.black)
         }
     }
 }
@@ -49,11 +42,6 @@ struct Trigonometry_view: View{
 struct Circle: Shape {
     var radius: CGFloat
     var center: CGPoint
-    
-    init(radius: CGFloat, center: CGPoint){
-        self.radius = radius
-        self.center = center
-    }
     
     func path(in rect: CGRect) -> Path{
         var path = Path()
@@ -67,55 +55,41 @@ struct Circle: Shape {
 }
 
 struct CoordunateSystem: View {
-    var width: CGFloat
+    var size: CGFloat
     var center: CGPoint
     var body: some View{
         ZStack{
-            LineX(from: CGPoint(x: 0.0, y: width/2), to: CGPoint(x: width, y: width/2) )
-                .frame(width: width, height: width, alignment: .center)
-            LineY(from: CGPoint(x: width/2, y: width), to: CGPoint(x: width/2, y: 0.0) )
-                .frame(width: width, height: width)
+            LineX(from: CGPoint(x: 0.0, y: size/2), to: CGPoint(x: size, y: size/2))
+                .fill(Color.black)
+            LineY(from: CGPoint(x: size/2, y: size), to: CGPoint(x: size/2, y: 0.0) )
+                .fill(Color.black)
             Circle(radius: 5, center: center)
-                .frame(width: width, height: width)
-            ArrowX(width: width)
-                    .frame(width: width, height: width)
-            ArrowY(width: width)
-                        .frame(width: width, height: width)
+                .fill(Color.black)
+            Arrow(size: size).getArrow().position(x: size-size*0.04, y: size/2)
+            Arrow(size: size).getArrow()
+                .rotationEffect(Angle(degrees: -90.0))
+                .position(x: size/2, y: size*0.04)
         }
     }
 }
 
-struct ArrowX: Shape {
-    var width: CGFloat
-    var endPoint: CGPoint {CGPoint(x: width, y: width/2)}
+class Arrow {
+    var size: CGFloat
     
-    init(width: CGFloat){
-        self.width = width
+    init(size: CGFloat){
+        self.size = size
     }
-    func path(in rect: CGRect) -> Path{
-        var path = Path()
-        path.move(to: endPoint)
-        path.addLine(to: CGPoint(x: path.currentPoint!.x-20.0, y: path.currentPoint!.y-7.0))
-        path.addLine(to: CGPoint(x: path.currentPoint!.x, y: path.currentPoint!.y+14.0))
-        path.addLine(to: endPoint)
-        return path
-    }
-}
-
-struct ArrowY: Shape {
-    var width: CGFloat
-    var endPoint: CGPoint {CGPoint(x: width/2, y: 0.0)}
     
-    init(width: CGFloat){
-        self.width = width
-    }
-    func path(in rect: CGRect) -> Path{
+    var width: CGFloat {self.size*0.07}
+    var height: CGFloat {self.size*0.04}
+    
+    func getArrow() -> some View{
         var path = Path()
-        path.move(to: endPoint)
-        path.addLine(to: CGPoint(x: path.currentPoint!.x-7.0, y: path.currentPoint!.y+20.0))
-        path.addLine(to: CGPoint(x: path.currentPoint!.x+14.0, y: path.currentPoint!.y))
-        path.addLine(to: endPoint)
-        return path
+        path.move(to: CGPoint(x: width, y: height/2))
+        path.addLine(to: CGPoint(x: 0.0, y: 0.0))
+        path.addLine(to: CGPoint(x: 0.0, y: height))
+        path.addLine(to: CGPoint(x: width, y: height/2))
+        return path.frame(width: width, height: height)
     }
 }
 
