@@ -8,16 +8,19 @@
 import SwiftUI
 
 struct ContentView: View {
+    let k1 = 0.025
+    var k2: CGFloat {CGFloat(1 - 2*k1)}
+    let k3 = 40.0
     var body: some View {
         GeometryReader{ geometry in
             HStack{
-                Spacer(minLength: geometry.size.width*0.025)
+                Spacer(minLength: geometry.size.width*k1)
                 VStack(alignment: .center){
-                    Spacer().frame(height: 25.0)
-                    Trigonometry_view(size: geometry.size.width*0.95).background(Color.red)
-                    Spacer(minLength: geometry.size.height - geometry.size.width*0.95 - 25.0)
+                    Spacer().frame(height: k3)
+                    Trigonometry_view(size: geometry.size.width*k2)
+                    Spacer(minLength: geometry.size.height - geometry.size.width*k2 - k3)
                 }
-                Spacer(minLength: geometry.size.width*0.025)
+                Spacer(minLength: geometry.size.width*k1)
             }
         }
         
@@ -32,9 +35,8 @@ struct Trigonometry_view: View{
     var body: some View{
         ZStack{
             CoordunateSystem(size: size, center: center)
-            Circle(radius: size/2, center: center)
+            Circle(radius: size/2-2, center: center)
                 .stroke(lineWidth: 4)
-                .fill(Color.black)
         }
     }
 }
@@ -59,16 +61,16 @@ struct CoordunateSystem: View {
     var center: CGPoint
     var body: some View{
         ZStack{
-            LineX(from: CGPoint(x: 0.0, y: size/2), to: CGPoint(x: size, y: size/2))
-                .fill(Color.black)
-            LineY(from: CGPoint(x: size/2, y: size), to: CGPoint(x: size/2, y: 0.0) )
-                .fill(Color.black)
             Circle(radius: 5, center: center)
                 .fill(Color.black)
             Arrow(size: size).getArrow().position(x: size-size*0.04, y: size/2)
             Arrow(size: size).getArrow()
                 .rotationEffect(Angle(degrees: -90.0))
                 .position(x: size/2, y: size*0.04)
+            Line(size: size).getLine().position(x: size/2, y: size/2)
+            Line(size: size).getLine()
+                .rotationEffect(Angle(degrees: 90.0))
+                .position(x: size/2, y: size/2)
         }
     }
 }
@@ -93,44 +95,20 @@ class Arrow {
     }
 }
 
-struct LineX: Shape {
-    var from: CGPoint
-    var to: CGPoint
-    
-    init(from: CGPoint, to: CGPoint){
-        self.from = from
-        self.to = to
+class Line {
+    var size: CGFloat
+    init(size: CGFloat){
+        self.size = size
     }
-    
-    func path(in rect: CGRect) -> Path{
+    func getLine() -> some View{
         var path = Path()
-        path.move(to: CGPoint(x: self.from.x, y: self.from.y-1.5))
-        path.addLine(to: CGPoint(x: self.from.x, y: self.from.y+1.5))
-        path.addLine(to: CGPoint(x: self.to.x, y: self.to.y+1.5))
-        path.addLine(to: CGPoint(x: self.to.x, y: self.to.y-1.5))
-        return path
+        path.move(to: CGPoint(x: 0.0, y: 0.0))
+        path.addLine(to: CGPoint(x: size, y: 0))
+        path.addLine(to: CGPoint(x: size, y: 3))
+        path.addLine(to: CGPoint(x: 0, y: 3))
+        return path.frame(width: size, height: 3)
     }
 }
-
-struct LineY: Shape {
-    var from: CGPoint
-    var to: CGPoint
-    
-    init(from: CGPoint, to: CGPoint){
-        self.from = from
-        self.to = to
-    }
-    
-    func path(in rect: CGRect) -> Path{
-        var path = Path()
-        path.move(to: CGPoint(x: self.from.x-1.5, y: self.from.y))
-        path.addLine(to: CGPoint(x: self.from.x+1.5, y: self.from.y))
-        path.addLine(to: CGPoint(x: self.to.x+1.5, y: self.to.y))
-        path.addLine(to: CGPoint(x: self.to.x-1.5, y: self.to.y))
-        return path
-    }
-}
-
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
