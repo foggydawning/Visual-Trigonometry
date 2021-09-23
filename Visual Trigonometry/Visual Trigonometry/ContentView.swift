@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    let k1 = 0.025
+    let k1 = 0.1
     var k2: CGFloat {CGFloat(1 - 2*k1)}
     let k3 = 40.0
     var body: some View {
@@ -37,9 +37,64 @@ struct Trigonometry_view: View{
             CoordunateSystem(size: size, center: center)
             Circle(radius: size/2-2, center: center)
                 .stroke(lineWidth: 4)
+            Points(size: size, center: center).getPoints()
         }
     }
 }
+
+class Points{
+    var size: CGFloat
+    var center: CGPoint
+    var angles: [Double]
+    
+    init(size: CGFloat, center: CGPoint){
+        self.size = size
+        self.center = center
+        self.angles = []
+    }
+    
+    func setAngles(){
+        for angle in stride(from: 0.0, to: 331.0, by: 30.0){
+            angles.append(angle)
+        }
+        for angle in stride(from: 45.0, to: 316.0, by: 90.0){
+            angles.append(angle)
+        }
+    }
+    
+    func getPoints() -> some View{
+        self.setAngles()
+        let stack = ZStack{
+            ForEach(angles, id: \.self) { angle in
+                Circle(radius: 5, center: CGPoint(x: self.size-2, y: self.size/2))
+                    .rotationEffect(Angle(degrees: angle))
+            }
+        }.opacity(0.6)
+        
+        return stack
+    }
+}
+
+
+struct CoordunateSystem: View {
+    var size: CGFloat
+    var center: CGPoint
+    var body: some View{
+        ZStack{
+            Circle(radius: 6, center: center)
+                .fill(Color.black)
+            Arrow(size: size).getArrow().position(x: size-size*0.04, y: size/2)
+            Arrow(size: size).getArrow()
+                .rotationEffect(Angle(degrees: -90.0))
+                .position(x: size/2, y: size*0.04)
+            Line(size: size).getLine().position(x: size/2, y: size/2)
+            Line(size: size).getLine()
+                .rotationEffect(Angle(degrees: 90.0))
+                .position(x: size/2, y: size/2)
+        }
+    }
+}
+
 
 struct Circle: Shape {
     var radius: CGFloat
@@ -53,25 +108,6 @@ struct Circle: Shape {
                     endAngle: Angle(degrees: 360.0),
                     clockwise: true)
         return path
-    }
-}
-
-struct CoordunateSystem: View {
-    var size: CGFloat
-    var center: CGPoint
-    var body: some View{
-        ZStack{
-            Circle(radius: 5, center: center)
-                .fill(Color.black)
-            Arrow(size: size).getArrow().position(x: size-size*0.04, y: size/2)
-            Arrow(size: size).getArrow()
-                .rotationEffect(Angle(degrees: -90.0))
-                .position(x: size/2, y: size*0.04)
-            Line(size: size).getLine().position(x: size/2, y: size/2)
-            Line(size: size).getLine()
-                .rotationEffect(Angle(degrees: 90.0))
-                .position(x: size/2, y: size/2)
-        }
     }
 }
 
