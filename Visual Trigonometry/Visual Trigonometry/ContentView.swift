@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State var userText: String = ""
     let k1 = 0.1
     var k2: CGFloat {CGFloat(1 - 2*k1)}
     let k3 = 40.0
@@ -16,16 +17,18 @@ struct ContentView: View {
             HStack{
                 Spacer(minLength: geometry.size.width*k1)
                 VStack(alignment: .center){
-                    Spacer().frame(height: k3)
-                    Trigonometry_view(size: geometry.size.width*k2)
-                    Spacer(minLength: geometry.size.height - geometry.size.width*k2 - k3)
+                    Spacer()
+                    Trigonometry_view(size: geometry.size.width*k2).frame(height: geometry.size.width*k2)
+                    Spacer()
+                    userTextField(userText: $userText)
+                    Spacer()
                 }
                 Spacer(minLength: geometry.size.width*k1)
             }
         }
-        
     }
 }
+
 
 struct Trigonometry_view: View{
     var size: CGFloat
@@ -41,6 +44,7 @@ struct Trigonometry_view: View{
         }
     }
 }
+
 
 class Points{
     var size: CGFloat
@@ -70,7 +74,6 @@ class Points{
                     .rotationEffect(Angle(degrees: angle))
             }
         }.opacity(0.6)
-        
         return stack
     }
 }
@@ -149,5 +152,21 @@ class Line {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
+    }
+}
+
+struct userTextField: View {
+    @Binding var userText: String
+    var body: some View {
+        TextField("Input here your angle, bro", text: $userText)
+            .multilineTextAlignment(.center)
+            .accentColor(.black)
+            .frame(alignment: .center)
+            .padding(.all, 15.0)
+            .background(Color.gray.opacity(0.4).cornerRadius(20))
+            .foregroundColor(.white)
+            .font(.headline)
+            .lineLimit(/*@START_MENU_TOKEN@*/1/*@END_MENU_TOKEN@*/)
+            .keyboardType(.numbersAndPunctuation)
     }
 }
