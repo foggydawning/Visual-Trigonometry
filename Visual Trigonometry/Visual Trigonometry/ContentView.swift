@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @State var userText: String = ""
+    @State var mainButtonWasTapped: Bool = false
     let k1 = 0.05
     var k2: CGFloat {CGFloat(1 - 2*k1)}
     let k3 = 40.0
@@ -18,14 +19,18 @@ struct ContentView: View {
                 Spacer(minLength: geometry.size.width*k1)
                 VStack(alignment: .center){
                     Spacer()
-                    Trigonometry_view(size: geometry.size.width*k2).frame(height: geometry.size.width*k2)
+                    Trigonometry_view(
+                        mainButtonWasTapped: $mainButtonWasTapped,
+                        userAngle: Angle(degrees: Double("-\(userText)") ?? 0.0),
+                        size: geometry.size.width*k2
+                    )
+                        .frame(height: geometry.size.width*k2)
                     Spacer()
                     HStack{
                         userTextField(userText: $userText)
-                        mainButton()
+                        mainButton(mainButtonWasTapped: $mainButtonWasTapped)
                     }
                     
-                    Spacer()
                     Spacer()
                 }
                 Spacer(minLength: geometry.size.width*k1)
@@ -36,6 +41,8 @@ struct ContentView: View {
 
 
 struct Trigonometry_view: View{
+    @Binding var mainButtonWasTapped: Bool
+    var userAngle: Angle
     var size: CGFloat
     var center: CGPoint {
         CGPoint(x: size/2, y: size/2)
@@ -46,7 +53,34 @@ struct Trigonometry_view: View{
             Circle(radius: size/2-2, center: center)
                 .stroke(lineWidth: 4)
             Points(size: size, center: center).getPoints()
+            if mainButtonWasTapped == true{
+                mainPoint(size: size, center: center, angle: userAngle).getPoint()
+            }
         }
+    }
+}
+
+
+class mainPoint{
+    var size: CGFloat
+    var center: CGPoint
+    var angle: Angle
+    
+    init(size: CGFloat, center: CGPoint, angle: Angle){
+        self.size = size
+        self.center = center
+        self.angle = angle
+    }
+    
+    func getPoint() -> some View{
+        Circle(
+            radius: 7,
+            center: CGPoint(
+                        x: self.size-2,
+                        y: self.size/2
+                    )
+        )   .rotationEffect(angle)
+            .foregroundColor(.red)
     }
 }
 
@@ -177,9 +211,10 @@ struct userTextField: View {
 }
 
 struct mainButton: View {
+    @Binding var mainButtonWasTapped: Bool
     var body: some View {
         Button(action: {
-            
+            mainButtonWasTapped = true
         })  {
             Text("Gooo!")
                 .fontWeight(.bold)
