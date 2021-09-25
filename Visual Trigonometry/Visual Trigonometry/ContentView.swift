@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @State var userText: String = ""
-    let k1 = 0.1
+    let k1 = 0.05
     var k2: CGFloat {CGFloat(1 - 2*k1)}
     let k3 = 40.0
     var body: some View {
@@ -20,7 +20,12 @@ struct ContentView: View {
                     Spacer()
                     Trigonometry_view(size: geometry.size.width*k2).frame(height: geometry.size.width*k2)
                     Spacer()
-                    userTextField(userText: $userText)
+                    HStack{
+                        userTextField(userText: $userText)
+                        mainButton()
+                    }
+                    
+                    Spacer()
                     Spacer()
                 }
                 Spacer(minLength: geometry.size.width*k1)
@@ -158,15 +163,32 @@ struct ContentView_Previews: PreviewProvider {
 struct userTextField: View {
     @Binding var userText: String
     var body: some View {
-        TextField("Input here your angle, bro", text: $userText)
+        TextField("Input your angle here, bro", text: $userText)
             .multilineTextAlignment(.center)
             .accentColor(.black)
             .frame(alignment: .center)
-            .padding(.all, 15.0)
-            .background(Color.gray.opacity(0.4).cornerRadius(20))
+            .padding(.all, 15)
+            .background(Color.gray.opacity(0.4).cornerRadius(30))
             .foregroundColor(.white)
             .font(.headline)
             .lineLimit(/*@START_MENU_TOKEN@*/1/*@END_MENU_TOKEN@*/)
             .keyboardType(.numbersAndPunctuation)
+    }
+}
+
+struct mainButton: View {
+    var body: some View {
+        Button(action: {
+            
+        })  {
+            Text("Gooo!")
+                .fontWeight(.bold)
+                .padding(14)
+                .foregroundColor(.black)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 30)
+                        .stroke(Color.black, lineWidth: 3)
+                )
+        }
     }
 }
