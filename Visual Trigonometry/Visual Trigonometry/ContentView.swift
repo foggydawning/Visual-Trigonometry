@@ -8,23 +8,25 @@
 import SwiftUI
 
 struct ContentView: View {
+    
     @State var userText: String = ""
     @State var mainButtonWasTapped: Bool = false
-    let k1 = 0.05
-    var k2: CGFloat {CGFloat(1 - 2*k1)}
-    let k3 = 40.0
+    
+    let merginFromEdges = 0.05
+    var widthOfWorkPlace: CGFloat {CGFloat((1 - 2*merginFromEdges)*UIScreen.main.bounds.width)}
+    
     var body: some View {
         GeometryReader{ geometry in
             HStack{
-                Spacer(minLength: geometry.size.width*k1)
+                Spacer(minLength: geometry.size.width*merginFromEdges)
                 VStack(alignment: .center){
                     Spacer()
                     Trigonometry_view(
                         mainButtonWasTapped: $mainButtonWasTapped,
                         userAngle: Angle(degrees: Double("-\(userText)") ?? 0.0),
-                        size: geometry.size.width*k2
+                        size: widthOfWorkPlace
                     )
-                        .frame(height: geometry.size.width*k2)
+                        .frame(height: widthOfWorkPlace)
                     Spacer()
                     HStack{
                         userTextField(userText: $userText)
@@ -33,7 +35,7 @@ struct ContentView: View {
                     
                     Spacer()
                 }
-                Spacer(minLength: geometry.size.width*k1)
+                Spacer(minLength: geometry.size.width*merginFromEdges)
             }
         }
     }
