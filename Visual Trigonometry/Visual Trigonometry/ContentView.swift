@@ -15,9 +15,7 @@ struct ContentView: View {
     
     var merginFromEdges = 0.05
     
-    var widthOfWorkPlace: CGFloat {CGFloat(
-        (1 - 2*merginFromEdges)*UIScreen.main.bounds.width
-    )}
+    var widthOfWorkPlace: CGFloat {CGFloat((1 - 2*merginFromEdges)*UIScreen.main.bounds.width)}
     
     var body: some View {
         GeometryReader{ geometry in
