@@ -10,7 +10,7 @@ import SwiftUI
 struct ContentView: View {
     
     @State var userText: String = ""
-    @State var mainButtonWasTapped: Bool = false
+    @State var handledUserInput: Angle? = nil
     
     let merginFromEdges = 0.05
     var widthOfWorkPlace: CGFloat {CGFloat((1 - 2*merginFromEdges)*UIScreen.main.bounds.width)}
@@ -22,15 +22,17 @@ struct ContentView: View {
                 VStack(alignment: .center){
                     Spacer()
                     Trigonometry_view(
-                        mainButtonWasTapped: $mainButtonWasTapped,
-                        userAngle: Angle(degrees: Double("-\(userText)") ?? 0.0),
+                        userAngle: handledUserInput,
                         size: widthOfWorkPlace
                     )
                         .frame(height: widthOfWorkPlace)
                     Spacer()
                     HStack{
                         userTextField(userText: $userText)
-                        mainButton(mainButtonWasTapped: $mainButtonWasTapped)
+                        mainButton(
+                            handledUserInput: $handledUserInput,
+                            userText: $userText
+                        )
                     }
                     
                     Spacer()
@@ -43,8 +45,7 @@ struct ContentView: View {
 
 
 struct Trigonometry_view: View{
-    @Binding var mainButtonWasTapped: Bool
-    var userAngle: Angle
+    var userAngle: Angle?
     var size: CGFloat
     var center: CGPoint {
         CGPoint(x: size/2, y: size/2)
@@ -55,8 +56,8 @@ struct Trigonometry_view: View{
             Circle(radius: size/2-2, center: center)
                 .stroke(lineWidth: 4)
             Points(size: size, center: center).getPoints()
-            if mainButtonWasTapped == true{
-                mainPoint(size: size, center: center, angle: userAngle).getPoint()
+            if userAngle != nil{
+                mainPoint(size: size, center: center, angle: userAngle!).getPoint()
             }
         }
     }
@@ -207,16 +208,20 @@ struct userTextField: View {
             .background(Color.gray.opacity(0.4).cornerRadius(30))
             .foregroundColor(.white)
             .font(.headline)
-            .lineLimit(/*@START_MENU_TOKEN@*/1/*@END_MENU_TOKEN@*/)
+            .lineLimit(1)
             .keyboardType(.numbersAndPunctuation)
     }
 }
 
 struct mainButton: View {
-    @Binding var mainButtonWasTapped: Bool
+    
+    @Binding var handledUserInput: Angle?
+    @Binding var userText: String
+    
     var body: some View {
         Button(action: {
-            mainButtonWasTapped = true
+            let handler = Handler(userText: userText)
+            handledUserInput = handler.handle()
         })  {
             Text("Gooo!")
                 .fontWeight(.bold)
@@ -227,5 +232,56 @@ struct mainButton: View {
                         .stroke(Color.black, lineWidth: 3)
                 )
         }
+    }
+}
+
+
+enum InputTextError: Error{
+    case invalidText
+    case tooManySeparators
+    case emptyString
+}
+
+class Handler{
+    var userText: String
+    private var correctNumbers: String = "-0123456789."
+    
+    init(userText: String){
+        self.userText = userText.replacingOccurrences(of: ",", with: ".")
+    }
+    
+    func handle() -> Angle?{
+        do {
+            try self.handleError()
+            return Angle(degrees: self.getDouble()*(-1.0))
+        } catch InputTextError.tooManySeparators{
+            print("too many separators")
+        } catch InputTextError.invalidText{
+            print("invalid characters in the input")
+        } catch InputTextError.emptyString{
+            print("empty string")
+        } catch {
+            print("something")
+        }
+        return nil
+    }
+    
+    func handleError() throws {
+        var numberOfSeparatos: Int = 0
+        for symbol in self.userText{
+            if correctNumbers.contains(symbol) == false{
+                throw InputTextError.invalidText
+            } else if symbol == "."{
+                numberOfSeparatos += 1
+            }
+        }
+        
+        if numberOfSeparatos > 1{
+            throw InputTextError.tooManySeparators
+        }
+    }
+    
+    func getDouble() -> Double{
+        Double(self.userText)!
     }
 }
