@@ -11,6 +11,7 @@ struct ContentView: View {
     
     @State var userText: String = ""
     @State var handledUserInput: Angle? = nil
+    @State var errorString: String = " "
     
     let merginFromEdges = 0.05
     var widthOfWorkPlace: CGFloat {CGFloat((1 - 2*merginFromEdges)*UIScreen.main.bounds.width)}
@@ -28,12 +29,26 @@ struct ContentView: View {
                         .frame(height: widthOfWorkPlace)
                     Spacer()
                     HStack{
+                        
+                        Text(errorString)
+                            .fontWeight(.light)
+                            .foregroundColor(.red)
+                            .font(.footnote)
+                            .multilineTextAlignment(.trailing)
+                            .animation(.spring())
+                        Spacer()
+                    }
+                    
+                    HStack{
                         userTextField(userText: $userText)
                         mainButton(
                             handledUserInput: $handledUserInput,
-                            userText: $userText
+                            userText: $userText,
+                            errorString: $errorString
                         )
                     }
+                    
+                        
                     
                     Spacer()
                 }
@@ -217,11 +232,14 @@ struct mainButton: View {
     
     @Binding var handledUserInput: Angle?
     @Binding var userText: String
+    @Binding var errorString: String
     
     var body: some View {
         Button(action: {
             let handler = Handler(userText: userText)
-            handledUserInput = handler.handle()
+            handler.handle()
+            handledUserInput = handler.handledUserInput
+            errorString = handler.errorString
         })  {
             Text("Gooo!")
                 .fontWeight(.bold)
@@ -243,6 +261,7 @@ enum InputTextError: Error{
 }
 
 class Handler{
+    
     var userText: String
     private var correctNumbers: String = "-0123456789."
     
@@ -250,20 +269,21 @@ class Handler{
         self.userText = userText.replacingOccurrences(of: ",", with: ".")
     }
     
-    func handle() -> Angle?{
+    var errorString: String = " "
+    var handledUserInput: Angle? = nil
+    func handle(){
         do {
             try self.handleError()
-            return Angle(degrees: self.getDouble()*(-1.0))
+            self.handledUserInput = Angle(degrees: self.getDouble()*(-1.0))
         } catch InputTextError.tooManySeparators{
-            print("too many separators")
+            self.errorString = "too many separators"
         } catch InputTextError.invalidText{
-            print("invalid characters in the input")
+            self.errorString = "invalid characters in the input"
         } catch InputTextError.emptyString{
-            print("empty string")
+            self.errorString = "empty string"
         } catch {
-            print("something")
+            self.errorString = "something"
         }
-        return nil
     }
     
     func handleError() throws {
