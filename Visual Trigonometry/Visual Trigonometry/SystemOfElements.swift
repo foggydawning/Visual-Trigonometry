@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TrigonometryView: View{
-    var userAngle: Angle?
+    @Binding var userAngle: Angle?
     var size: CGFloat
     var center: CGPoint {
         CGPoint(x: size/2, y: size/2)
@@ -20,8 +20,8 @@ struct TrigonometryView: View{
                 .stroke(lineWidth: 4)
             Points(size: size, center: center).getPoints()
             if userAngle != nil{
-                mainPoint(size: size, center: center, angle: userAngle!).getPoint()
-            }
+                mainPoint(size: size, center: center, angle: userAngle!).getPoint().animation(.spring(response: 1.5))
+            } 
         }
     }
 }

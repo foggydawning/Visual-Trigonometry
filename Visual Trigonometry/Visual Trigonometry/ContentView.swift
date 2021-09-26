@@ -24,7 +24,7 @@ struct ContentView: View {
                 VStack(alignment: .center){
                     Spacer()
                     TrigonometryView(
-                        userAngle: handledUserInput,
+                        userAngle: $handledUserInput,
                         size: widthOfWorkPlace
                     )
                         .frame(height: widthOfWorkPlace )

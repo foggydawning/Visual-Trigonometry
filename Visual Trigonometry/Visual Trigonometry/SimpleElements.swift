@@ -143,10 +143,7 @@ struct mainButton: View {
     
     var body: some View {
         Button(action: {
-            let handler = Handler(userText: userText)
-            handler.handle()
-            handledUserInput = handler.handledUserInput
-            errorString = handler.errorString
+            
         })  {
             Text("Gooo!")
                 .fontWeight(.bold)
@@ -157,5 +154,17 @@ struct mainButton: View {
                         .stroke(Color.black, lineWidth: 3)
                 )
         }
+        .simultaneousGesture(
+        DragGesture(minimumDistance: 0)
+            .onChanged({ _ in
+                handledUserInput = Angle(degrees: 0)
+            })
+            .onEnded({ _ in
+                let handler = Handler(userText: userText)
+                handler.handle()
+                handledUserInput = handler.handledUserInput
+                errorString = handler.errorString
+            })
+        )
     }
 }

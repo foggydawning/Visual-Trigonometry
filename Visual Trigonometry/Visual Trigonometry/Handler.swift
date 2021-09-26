@@ -23,17 +23,20 @@ class Handler{
             try self.handleError()
             self.handledUserInput = Angle(degrees: self.getDouble()*(-1.0))
         } catch InputTextError.tooManySeparators{
-            self.errorString = "too many separators"
+            self.errorString = "Too many separators"
         } catch InputTextError.invalidText{
-            self.errorString = "invalid characters in the input"
+            self.errorString = "Invalid characters in the input"
         } catch InputTextError.emptyString{
-            self.errorString = "empty string"
+            self.errorString = "Empty string"
         } catch {
-            self.errorString = "something"
+            self.errorString = "???"
         }
     }
     
     func handleError() throws {
+        if self.userText.count == 0{
+            throw InputTextError.emptyString
+        }
         var numberOfSeparatos: Int = 0
         for symbol in self.userText{
             if correctNumbers.contains(symbol) == false{
