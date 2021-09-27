@@ -9,10 +9,15 @@ import SwiftUI
 
 struct TrigonometryView: View{
     @Binding var userAngle: Angle?
+    @Binding var helpsLineOpticaly: Double
+    
     var size: CGFloat
     var center: CGPoint {
         CGPoint(x: size/2, y: size/2)
     }
+    
+    
+    
     var body: some View{
         ZStack{
             CoordunateSystem(size: size, center: center)
@@ -20,8 +25,22 @@ struct TrigonometryView: View{
                 .stroke(lineWidth: 4)
             PointsOnMainCicrle(size: size, center: center).getView()
             if userAngle != nil{
-                mainPoint(size: size, center: center, angle: userAngle!).getView().animation(.spring(response: 1.5))
-            } 
+                Line(size: size/2).getLine()
+                    .cornerRadius(10.0)
+                    .position(x: size*3/4, y: size/2)
+                    .foregroundColor(.blue)
+                    .opacity(helpsLineOpticaly)
+                    .animation(
+                        .spring(response: (helpsLineOpticaly == 0) ? 0 : 1.5)
+                            .delay((helpsLineOpticaly == 0) ? 0 : 1.7)
+                    )
+                    .rotationEffect(userAngle!)
+                mainPoint(size: size, center: center, angle: userAngle!)
+                    .getView()
+                    .animation(.spring(response: 1.5))
+            }
+            Circle(radius: 6, center: center)
+                .fill(Color.black)
         }
     }
 }
@@ -32,8 +51,7 @@ struct CoordunateSystem: View {
     var center: CGPoint
     var body: some View{
         ZStack{
-            Circle(radius: 6, center: center)
-                .fill(Color.black)
+            
             Arrow(size: size).getArrow().position(x: size-size*0.04, y: size/2)
             Arrow(size: size).getArrow()
                 .rotationEffect(Angle(degrees: -90.0))

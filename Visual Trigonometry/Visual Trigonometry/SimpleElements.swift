@@ -144,6 +144,7 @@ struct mainButton: View {
     @Binding var handledUserInput: Angle?
     @Binding var userText: String
     @Binding var errorString: String
+    @Binding var helpsLineOpticaly: Double
     
     var body: some View {
         Button(action: {
@@ -161,6 +162,7 @@ struct mainButton: View {
         .simultaneousGesture(
         DragGesture(minimumDistance: 0)
             .onChanged({ _ in
+                helpsLineOpticaly = 0
                 handledUserInput = Angle(degrees: 0)
             })
             .onEnded({ _ in
@@ -168,6 +170,7 @@ struct mainButton: View {
                 handler.handle()
                 handledUserInput = handler.handledUserInput
                 errorString = handler.errorString
+                helpsLineOpticaly = 1
             })
         )
     }

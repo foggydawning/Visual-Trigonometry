@@ -12,6 +12,7 @@ struct ContentView: View {
     @State var userText: String = ""
     @State var handledUserInput: Angle? = nil
     @State var errorString: String = " "
+    @State var helpsLineOpticaly: Double = 0
     
     var merginFromEdges = 0.05
     
@@ -25,6 +26,7 @@ struct ContentView: View {
                     Spacer()
                     TrigonometryView(
                         userAngle: $handledUserInput,
+                        helpsLineOpticaly: $helpsLineOpticaly,
                         size: widthOfWorkPlace
                     )
                         .frame(height: widthOfWorkPlace )
@@ -43,7 +45,8 @@ struct ContentView: View {
                         mainButton(
                             handledUserInput: $handledUserInput,
                             userText: $userText,
-                            errorString: $errorString
+                            errorString: $errorString,
+                            helpsLineOpticaly: $helpsLineOpticaly
                         )
                     }
                     Spacer()
