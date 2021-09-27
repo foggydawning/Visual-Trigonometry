@@ -16,8 +16,6 @@ struct TrigonometryView: View{
         CGPoint(x: size/2, y: size/2)
     }
     
-    
-    
     var body: some View{
         ZStack{
             CoordunateSystem(size: size, center: center)
@@ -25,19 +23,36 @@ struct TrigonometryView: View{
                 .stroke(lineWidth: 4)
             PointsOnMainCicrle(size: size, center: center).getView()
             if userAngle != nil{
-                Line(size: size/2).getLine()
-                    .cornerRadius(10.0)
-                    .position(x: size*3/4, y: size/2)
-                    .foregroundColor(.blue)
+                Radius(
+                    size: size,
+                    userAngle: userAngle!,
+                    helpsLineOpticaly: helpsLineOpticaly
+                ).getRadiusView()
+                    
+                mainPoint(
+                    size: size,
+                    center: center,
+                    angle: userAngle!
+                )
+                    .getView()
+                
+                Circle(
+                    radius: 20,
+                    center: center,
+                    end: Angle(
+                        degrees: userAngle!
+                            .degrees
+                            .truncatingRemainder(dividingBy: 360.0)
+                    )
+                )
+                    .stroke(lineWidth: 4.5)
+                    .foregroundColor(.green)
                     .opacity(helpsLineOpticaly)
                     .animation(
                         .spring(response: (helpsLineOpticaly == 0) ? 0 : 1.5)
                             .delay((helpsLineOpticaly == 0) ? 0 : 1.7)
                     )
-                    .rotationEffect(userAngle!)
-                mainPoint(size: size, center: center, angle: userAngle!)
-                    .getView()
-                    .animation(.spring(response: 1.5))
+                    
             }
             Circle(radius: 6, center: center)
                 .fill(Color.black)
@@ -51,13 +66,12 @@ struct CoordunateSystem: View {
     var center: CGPoint
     var body: some View{
         ZStack{
-            
-            Arrow(size: size).getArrow().position(x: size-size*0.04, y: size/2)
-            Arrow(size: size).getArrow()
+            Arrow(size: size).getView().position(x: size-size*0.04, y: size/2)
+            Arrow(size: size).getView()
                 .rotationEffect(Angle(degrees: -90.0))
                 .position(x: size/2, y: size*0.04)
-            Line(size: size).getLine().position(x: size/2, y: size/2)
-            Line(size: size).getLine()
+            BasicLine(size: size).getLine().position(x: size/2, y: size/2)
+            BasicLine(size: size).getLine()
                 .rotationEffect(Angle(degrees: 90.0))
                 .position(x: size/2, y: size/2)
         }

@@ -65,6 +65,7 @@ class mainPoint: BasicPoint{
                     )
         )   .rotationEffect(angle)
             .foregroundColor(.red)
+            .animation(.spring(response: 1.5))
     }
 }
 
@@ -72,13 +73,15 @@ class mainPoint: BasicPoint{
 struct Circle: Shape {
     var radius: CGFloat
     var center: CGPoint
+    var start: Angle = Angle(degrees: 0)
+    var end: Angle = Angle(degrees: 360)
     
     func path(in rect: CGRect) -> Path{
         var path = Path()
         
         path.addArc(center: self.center, radius: self.radius,
-                    startAngle: Angle(degrees: 0.0),
-                    endAngle: Angle(degrees: 360.0),
+                    startAngle: start,
+                    endAngle: end,
                     clockwise: true)
         return path
     }
@@ -95,7 +98,7 @@ class Arrow {
     var width: CGFloat {self.size*0.07}
     var height: CGFloat {self.size*0.04}
     
-    func getArrow() -> some View{
+    func getView() -> some View{
         var path = Path()
         path.move(to: CGPoint(x: width, y: height/2))
         path.addLine(to: CGPoint(x: 0.0, y: 0.0))
@@ -123,18 +126,45 @@ struct userTextField: View {
 }
 
 
-class Line {
+class BasicLine {
+    var width: CGFloat
     var size: CGFloat
-    init(size: CGFloat){
+    init(size: CGFloat, width: CGFloat = 3){
         self.size = size
+        self.width = width
     }
     func getLine() -> some View{
         var path = Path()
         path.move(to: CGPoint(x: 0.0, y: 0.0))
-        path.addLine(to: CGPoint(x: size, y: 0))
-        path.addLine(to: CGPoint(x: size, y: 3))
-        path.addLine(to: CGPoint(x: 0, y: 3))
-        return path.frame(width: size, height: 3)
+        path.addLine(to: CGPoint(x: self.size, y: 0))
+        path.addLine(to: CGPoint(x: self.size, y: self.width))
+        path.addLine(to: CGPoint(x: 0, y: self.width))
+        return path.frame(width: self.size, height: self.width)
+    }
+}
+
+class Radius: BasicLine {
+    var userAngle: Angle
+    var helpsLineOpticaly: Double
+    
+    init(size: CGFloat, userAngle: Angle, helpsLineOpticaly: Double){
+        self.userAngle = userAngle
+        self.helpsLineOpticaly = helpsLineOpticaly
+        super.init(size: size/2, width: 3.25)
+    }
+    
+    func getRadiusView() -> some View{
+        let view: some View = super.getLine()
+        let radiusView: some View = view
+            .position(x: self.size*6/4, y: self.size)
+            .foregroundColor(.blue)
+            .opacity(self.helpsLineOpticaly)
+            .animation(
+                .spring(response: (self.helpsLineOpticaly == 0) ? 0 : 1.5)
+                    .delay((self.helpsLineOpticaly == 0) ? 0 : 1.7)
+            )
+            .rotationEffect(self.userAngle)
+        return radiusView
     }
 }
 
