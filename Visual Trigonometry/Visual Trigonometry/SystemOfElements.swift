@@ -18,9 +18,9 @@ struct TrigonometryView: View{
             CoordunateSystem(size: size, center: center)
             Circle(radius: size/2-2, center: center)
                 .stroke(lineWidth: 4)
-            Points(size: size, center: center).getPoints()
+            PointsOnMainCicrle(size: size, center: center).getView()
             if userAngle != nil{
-                mainPoint(size: size, center: center, angle: userAngle!).getPoint().animation(.spring(response: 1.5))
+                mainPoint(size: size, center: center, angle: userAngle!).getView().animation(.spring(response: 1.5))
             } 
         }
     }

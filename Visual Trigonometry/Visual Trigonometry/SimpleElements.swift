@@ -8,15 +8,22 @@
 import SwiftUI
 
 
-class Points{
+class BasicPoint{
     var size: CGFloat
     var center: CGPoint
-    var angles: [Double]
     
     init(size: CGFloat, center: CGPoint){
         self.size = size
         self.center = center
+    }
+}
+
+class PointsOnMainCicrle: BasicPoint{
+    var angles: [Double]
+    
+    override init(size: CGFloat, center: CGPoint){
         self.angles = []
+        super.init(size: size, center: center)
     }
     
     func setAngles(){
@@ -28,7 +35,7 @@ class Points{
         }
     }
     
-    func getPoints() -> some View{
+    func getView() -> some View {
         self.setAngles()
         let stack = ZStack{
             ForEach(angles, id: \.self) { angle in
@@ -41,18 +48,15 @@ class Points{
 }
 
 
-class mainPoint{
-    var size: CGFloat
-    var center: CGPoint
+class mainPoint: BasicPoint{
     var angle: Angle
     
     init(size: CGFloat, center: CGPoint, angle: Angle){
-        self.size = size
-        self.center = center
         self.angle = angle
+        super.init(size: size, center: center)
     }
     
-    func getPoint() -> some View{
+    func getView() -> some View{
         Circle(
             radius: 7,
             center: CGPoint(
