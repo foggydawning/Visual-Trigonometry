@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-
 class BasicPoint{
     var size: CGFloat
     var center: CGPoint
@@ -47,7 +46,6 @@ class PointsOnMainCicrle: BasicPoint{
     }
 }
 
-
 class mainPoint: BasicPoint{
     var angle: Angle
     
@@ -82,7 +80,7 @@ struct Circle: Shape {
         path.addArc(center: self.center, radius: self.radius,
                     startAngle: start,
                     endAngle: end,
-                    clockwise: true)
+                    clockwise: (end.degrees >= 0) ? false : true )
         return path
     }
 }
@@ -135,7 +133,7 @@ class BasicLine {
     }
     func getLine() -> some View{
         var path = Path()
-        path.move(to: CGPoint(x: 0.0, y: 0.0))
+        path.move(to: CGPoint(x: 0, y: 0))
         path.addLine(to: CGPoint(x: self.size, y: 0))
         path.addLine(to: CGPoint(x: self.size, y: self.width))
         path.addLine(to: CGPoint(x: 0, y: self.width))
@@ -150,13 +148,13 @@ class Radius: BasicLine {
     init(size: CGFloat, userAngle: Angle, helpsLineOpticaly: Double){
         self.userAngle = userAngle
         self.helpsLineOpticaly = helpsLineOpticaly
-        super.init(size: size/2, width: 3.25)
+        super.init(size: size, width: 3.25)
     }
     
-    func getRadiusView() -> some View{
+    func getRadiusView() -> some View {
         let view: some View = super.getLine()
         let radiusView: some View = view
-            .position(x: self.size*6/4, y: self.size)
+            .position(x: self.size*1.5, y: self.size+2)
             .foregroundColor(.blue)
             .opacity(self.helpsLineOpticaly)
             .animation(

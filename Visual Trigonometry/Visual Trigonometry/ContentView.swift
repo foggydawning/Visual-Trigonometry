@@ -9,10 +9,10 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @State var userText: String = ""
-    @State var handledUserInput: Angle? = nil
-    @State var errorString: String = " "
-    @State var helpsLineOpticaly: Double = 0
+    @State private var userText: String = ""
+    @State private var handledUserInput: Angle? = nil
+    @State private var errorString: String = " "
+    @State private var helpsLineOpticaly: Double = 0
     
     var merginFromEdges = 0.05
     
