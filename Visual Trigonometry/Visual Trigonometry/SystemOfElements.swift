@@ -50,6 +50,36 @@ struct TrigonometryView: View{
                         ,value: helpsLineOpticaly
                     )
                 
+                // radius
+                Line(startPoint: center, lenght: size/2, width: 4)
+                    .foregroundColor(.blue)
+                    .opacity(helpsLineOpticaly)
+                    .animation(
+                            .spring(response: (helpsLineOpticaly == 0) ? 0 : 1.5)
+                            .delay((helpsLineOpticaly == 0) ? 0 : 1.7)
+                        ,value: helpsLineOpticaly
+                    )
+                    .rotationEffect(userAngle!)
+                
+                // sinLine
+                Line(startPoint: .init(x: center.x + cos(userAngle!.radians)*mainRadiusLenght,
+                                       y: center.y),
+                     lenght: abs(sin(userAngle!.radians)*mainRadiusLenght),
+                     width: 4)
+                    
+                    .foregroundColor(Color.red)
+                    .opacity(helpsLineOpticaly)
+                    .animation(
+                            .spring(response: (helpsLineOpticaly == 0) ? 0 : 1.5)
+                            .delay((helpsLineOpticaly == 0) ? 0 : 1.7)
+                        ,value: helpsLineOpticaly
+                    )
+                    .rotationEffect(
+                        (sin(userAngle!.radians)>=0) ? .degrees(90) : .degrees(270),
+                        anchor: .init(x: (center.x + cos(userAngle!.radians)*mainRadiusLenght)/size,
+                                          y: center.y/size)
+                    )
+                    
                 // cosLine
                 Line(startPoint: center,
                      lenght: abs(cos(userAngle!.radians)*mainRadiusLenght),
@@ -62,20 +92,11 @@ struct TrigonometryView: View{
                         ,value: helpsLineOpticaly
                     )
                     .rotationEffect(
-                        (cos(userAngle!.radians)>=0) ? Angle(degrees: 0) : Angle(degrees: 180)
+                        (cos(userAngle!.radians)>=0) ? .zero : .degrees(180)
                     )
                 
 
-                // radius
-                Line(startPoint: center, lenght: size/2, width: 4)
-                    .foregroundColor(.blue)
-                    .opacity(helpsLineOpticaly)
-                    .animation(
-                            .spring(response: (helpsLineOpticaly == 0) ? 0 : 1.5)
-                            .delay((helpsLineOpticaly == 0) ? 0 : 1.7)
-                        ,value: helpsLineOpticaly
-                    )
-                    .rotationEffect(userAngle!)
+                
                 
                 
 

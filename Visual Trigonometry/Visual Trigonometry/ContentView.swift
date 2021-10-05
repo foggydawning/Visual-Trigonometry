@@ -14,7 +14,9 @@ struct ContentView: View {
     @State private var errorString: String = " "
     @State private var helpsLineOpticaly: Double = 0
     
-    var merginFromEdges = 0.05
+    var merginFromEdges : Double = (UIScreen.main.bounds.width <= 375)
+        ? 0.08 : 0.05
+    
     
     var widthOfWorkPlace: CGFloat {CGFloat((1 - 2*merginFromEdges)*UIScreen.main.bounds.width)}
     
