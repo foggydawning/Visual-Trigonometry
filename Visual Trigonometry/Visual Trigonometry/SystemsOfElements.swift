@@ -25,14 +25,17 @@ struct TrigonometryView: View{
     var body: some View{
         ZStack{
             CoordunateSystem(size: size)
+            
+            // mainCircle
             Circle(radius: mainRadiusLenght, center: center)
                 .stroke(lineWidth: 5)
                 .foregroundColor(Color("Forest"))
+            
+            //0, 30, 45, 90, 120, 135, 150, 180, ...
             PointsOnMainCicrle(lenghtOfRadius: size/2)
                 .foregroundColor(Color("Forest"))
                 .opacity(0.6)
             
-                
             if userAngle != nil{
                 
                 // angle
@@ -128,6 +131,7 @@ struct CoordunateSystem: View {
     }
 }
 
+
 struct ErrorString: View {
     @Binding var errorString: String
     var body: some View {
@@ -142,6 +146,7 @@ struct ErrorString: View {
         }
     }
 }
+
 
 struct AngleTextFieldAndGoButton: View {
     

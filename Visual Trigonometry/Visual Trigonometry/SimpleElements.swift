@@ -8,16 +8,6 @@
 import SwiftUI
 import Foundation
 
-class BasicPoint{
-    var size: CGFloat
-    var center: CGPoint
-    
-    init(size: CGFloat, center: CGPoint){
-        self.size = size
-        self.center = center
-    }
-}
-
 struct PointsOnMainCicrle: Shape{
      
     let lenghtOfRadius: Double
@@ -123,6 +113,7 @@ struct userTextField: View {
             .accentColor(.white)
     }
 }
+
 
 /// Create horizontal line as rect
 struct Line: Shape {

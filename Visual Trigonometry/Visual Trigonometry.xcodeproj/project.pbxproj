@@ -13,7 +13,7 @@
 		D3983F582700DFB800FE35C0 /* SimpleElements.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3983F572700DFB800FE35C0 /* SimpleElements.swift */; };
 		D3983F5A2700E08600FE35C0 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3983F592700E08600FE35C0 /* Errors.swift */; };
 		D3983F5C2700E09D00FE35C0 /* Handler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3983F5B2700E09D00FE35C0 /* Handler.swift */; };
-		D3983F5E2700E11E00FE35C0 /* SystemOfElements.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3983F5D2700E11E00FE35C0 /* SystemOfElements.swift */; };
+		D3983F5E2700E11E00FE35C0 /* SystemsOfElements.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3983F5D2700E11E00FE35C0 /* SystemsOfElements.swift */; };
 		D3DC46EB270B905400BB0797 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3883F9A26FB561D00E4E545 /* ContentView.swift */; };
 /* End PBXBuildFile section */
 
@@ -27,7 +27,7 @@
 		D3983F572700DFB800FE35C0 /* SimpleElements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleElements.swift; sourceTree = "<group>"; };
 		D3983F592700E08600FE35C0 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		D3983F5B2700E09D00FE35C0 /* Handler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Handler.swift; sourceTree = "<group>"; };
-		D3983F5D2700E11E00FE35C0 /* SystemOfElements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemOfElements.swift; sourceTree = "<group>"; };
+		D3983F5D2700E11E00FE35C0 /* SystemsOfElements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemsOfElements.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,7 +62,7 @@
 			children = (
 				D3883F9826FB561D00E4E545 /* Visual_TrigonometryApp.swift */,
 				D3883F9A26FB561D00E4E545 /* ContentView.swift */,
-				D3983F5D2700E11E00FE35C0 /* SystemOfElements.swift */,
+				D3983F5D2700E11E00FE35C0 /* SystemsOfElements.swift */,
 				D3983F592700E08600FE35C0 /* Errors.swift */,
 				D3983F5B2700E09D00FE35C0 /* Handler.swift */,
 				D3983F572700DFB800FE35C0 /* SimpleElements.swift */,
@@ -150,7 +150,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D3983F5E2700E11E00FE35C0 /* SystemOfElements.swift in Sources */,
+				D3983F5E2700E11E00FE35C0 /* SystemsOfElements.swift in Sources */,
 				D3983F5A2700E08600FE35C0 /* Errors.swift in Sources */,
 				D3DC46EB270B905400BB0797 /* ContentView.swift in Sources */,
 				D3883F9926FB561D00E4E545 /* Visual_TrigonometryApp.swift in Sources */,
@@ -213,7 +213,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -268,7 +268,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
