@@ -31,17 +31,19 @@ struct ContentView: View {
                         helpsLineOpticaly: $helpsLineOpticaly,
                         size: widthOfWorkPlace
                     )
-                        .frame(height: widthOfWorkPlace )
+                        
                     Spacer()
+                
                     HStack{
                         Text(errorString)
                             .fontWeight(.light)
                             .foregroundColor(.red)
                             .font(.footnote)
                             .multilineTextAlignment(.trailing)
- 
+                            .animation(.spring(), value: errorString)
                         Spacer()
                     }
+                    
                     HStack{
                         userTextField(userText: $userText)
                         mainButton(
@@ -55,7 +57,7 @@ struct ContentView: View {
                 }
                 Spacer(minLength: geometry.size.width*merginFromEdges)
             }
-        }
+        }.background(Color("Foggy").opacity(0.1))
     }
 }
 

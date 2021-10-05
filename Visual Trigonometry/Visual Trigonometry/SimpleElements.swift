@@ -70,7 +70,7 @@ class mainPoint: BasicPoint{
                         y: self.size/2
                     )
         )   .rotationEffect(angle)
-            .foregroundColor(.red)
+            .foregroundColor(Color("Terracotta"))
             .animation(.spring(response: 1.5),
                        value: angle)
     }
@@ -116,16 +116,19 @@ struct Arrow: Shape {
 struct userTextField: View {
     @Binding var userText: String
     var body: some View {
-        TextField("Input your angle here, bro", text: $userText)
+        TextField("Input your angle here", text: $userText)
             .multilineTextAlignment(.center)
-            .accentColor(.black)
             .frame(alignment: .center)
             .padding(.all, 15)
-            .background(Color.gray.opacity(0.4).cornerRadius(30))
+            .background(Color("Pine")
+                            .opacity(0.2)
+                            .cornerRadius(30))
             .foregroundColor(.white)
             .font(.headline)
             .lineLimit(1)
             .keyboardType(.numbersAndPunctuation)
+            .disableAutocorrection(true)
+            .accentColor(.white)
     }
 }
 
@@ -169,10 +172,10 @@ struct mainButton: View {
             Text("Gooo!")
                 .fontWeight(.bold)
                 .padding(14)
-                .foregroundColor(.black)
+                .foregroundColor(Color("Forest"))
                 .overlay(
                     RoundedRectangle(cornerRadius: 30)
-                        .stroke(Color.black, lineWidth: 3)
+                        .stroke(Color("Forest"), lineWidth: 3)
                 )
         }
         .simultaneousGesture(
@@ -191,3 +194,4 @@ struct mainButton: View {
         )
     }
 }
+

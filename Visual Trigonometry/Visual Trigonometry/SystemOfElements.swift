@@ -12,7 +12,6 @@ struct TrigonometryView: View{
     @Binding var userAngle: Angle?
     @Binding var helpsLineOpticaly: Double
     
-    
     var size: Double
     var center: CGPoint {
         CGPoint(x: size/2, y: size/2)
@@ -27,11 +26,16 @@ struct TrigonometryView: View{
         ZStack{
             CoordunateSystem(size: size)
             Circle(radius: mainRadiusLenght, center: center)
-                .stroke(lineWidth: 4)
+                .stroke(lineWidth: 5)
+                .foregroundColor(Color("Forest"))
             PointsOnMainCicrle(lenghtOfRadius: size/2)
+                .foregroundColor(Color("Forest"))
                 .opacity(0.6)
+            
                 
             if userAngle != nil{
+                
+                // angle
                 Circle(
                     radius: 17,
                     center: center,
@@ -42,7 +46,7 @@ struct TrigonometryView: View{
                     )
                 )
                     .stroke(lineWidth: 4)
-                    .foregroundColor(.green)
+                    .foregroundColor(Color("Lime"))
                     .opacity(helpsLineOpticaly)
                     .animation(
                             .spring(response: (helpsLineOpticaly == 0) ? 0 : 1.5)
@@ -51,8 +55,8 @@ struct TrigonometryView: View{
                     )
                 
                 // radius
-                Line(startPoint: center, lenght: size/2, width: 4)
-                    .foregroundColor(.blue)
+                Line(startPoint: center, lenght: size/2, width: 5)
+                    .foregroundColor(Color("Stone Wall"))
                     .opacity(helpsLineOpticaly)
                     .animation(
                             .spring(response: (helpsLineOpticaly == 0) ? 0 : 1.5)
@@ -61,13 +65,30 @@ struct TrigonometryView: View{
                     )
                     .rotationEffect(userAngle!)
                 
+                
+                    
+                // cosLine
+                Line(startPoint: center,
+                     lenght: abs(cos(userAngle!.radians)*mainRadiusLenght),
+                     width: 5)
+                    .foregroundColor(Color("Biscotti"))
+                    .opacity(helpsLineOpticaly)
+                    .animation(
+                            .spring(response: (helpsLineOpticaly == 0) ? 0 : 1.5)
+                            .delay((helpsLineOpticaly == 0) ? 0 : 1.7)
+                        ,value: helpsLineOpticaly
+                    )
+                    .rotationEffect(
+                        (cos(userAngle!.radians)>=0) ? .zero : .degrees(180)
+                    )
+                
                 // sinLine
                 Line(startPoint: .init(x: center.x + cos(userAngle!.radians)*mainRadiusLenght,
                                        y: center.y),
                      lenght: abs(sin(userAngle!.radians)*mainRadiusLenght),
-                     width: 4)
+                     width: 5.5)
                     
-                    .foregroundColor(Color.red)
+                    .foregroundColor(Color("Honey"))
                     .opacity(helpsLineOpticaly)
                     .animation(
                             .spring(response: (helpsLineOpticaly == 0) ? 0 : 1.5)
@@ -79,27 +100,6 @@ struct TrigonometryView: View{
                         anchor: .init(x: (center.x + cos(userAngle!.radians)*mainRadiusLenght)/size,
                                           y: center.y/size)
                     )
-                    
-                // cosLine
-                Line(startPoint: center,
-                     lenght: abs(cos(userAngle!.radians)*mainRadiusLenght),
-                     width: 4)
-                    .foregroundColor(Color.purple)
-                    .opacity(helpsLineOpticaly)
-                    .animation(
-                            .spring(response: (helpsLineOpticaly == 0) ? 0 : 1.5)
-                            .delay((helpsLineOpticaly == 0) ? 0 : 1.7)
-                        ,value: helpsLineOpticaly
-                    )
-                    .rotationEffect(
-                        (cos(userAngle!.radians)>=0) ? .zero : .degrees(180)
-                    )
-                
-
-                
-                
-                
-
                 
                 mainPoint(
                     size: size,
@@ -108,9 +108,9 @@ struct TrigonometryView: View{
                 )
                     .getView()
             }
-            Circle(radius: 6, center: center)
-                .fill(Color.black)
-        }
+            Circle(radius: 5, center: center)
+                .fill(Color("Forest"))
+        }.frame(height: size)
     }
 }
 
@@ -122,9 +122,9 @@ struct CoordunateSystem: View {
             Arrow(size: size, endPoint: CGPoint(x: size, y: size/2))
             Arrow(size: size, endPoint: CGPoint(x: size, y: size/2))
                 .rotationEffect(Angle(degrees: -90))
-            Line(startPoint: CGPoint(x: 0, y: size/2), lenght: size)
-            Line(startPoint: CGPoint(x: 0, y: size/2), lenght: size)
+            Line(startPoint: CGPoint(x: 0, y: size/2), lenght: size, width: 4)
+            Line(startPoint: CGPoint(x: 0, y: size/2), lenght: size, width: 4)
                 .rotation(Angle(degrees: 90))
-        }
+        }.foregroundColor(Color("Forest"))
     }
 }
