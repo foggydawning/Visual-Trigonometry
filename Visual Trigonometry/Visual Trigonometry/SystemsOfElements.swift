@@ -25,14 +25,17 @@ struct TrigonometryView: View{
     var body: some View{
         ZStack{
             CoordunateSystem(size: size)
+            
+            // mainCircle
             Circle(radius: mainRadiusLenght, center: center)
                 .stroke(lineWidth: 5)
                 .foregroundColor(Color("Forest"))
+            
+            //0, 30, 45, 90, 120, 135, 150, 180, ...
             PointsOnMainCicrle(lenghtOfRadius: size/2)
                 .foregroundColor(Color("Forest"))
                 .opacity(0.6)
             
-                
             if userAngle != nil{
                 
                 // angle
@@ -65,8 +68,6 @@ struct TrigonometryView: View{
                     )
                     .rotationEffect(userAngle!)
                 
-                
-                    
                 // cosLine
                 Line(startPoint: center,
                      lenght: abs(cos(userAngle!.radians)*mainRadiusLenght),
@@ -101,12 +102,11 @@ struct TrigonometryView: View{
                                           y: center.y/size)
                     )
                 
-                mainPoint(
-                    size: size,
-                    center: center,
-                    angle: userAngle!
-                )
-                    .getView()
+                // mainPoint
+                mainPoint()
+                    .rotationEffect(userAngle!)
+                    .foregroundColor(Color("Terracotta"))
+                    .animation(.spring(response: 1.5), value: userAngle)
             }
             Circle(radius: 5, center: center)
                 .fill(Color("Forest"))
@@ -126,5 +126,42 @@ struct CoordunateSystem: View {
             Line(startPoint: CGPoint(x: 0, y: size/2), lenght: size, width: 4)
                 .rotation(Angle(degrees: 90))
         }.foregroundColor(Color("Forest"))
+    }
+}
+
+
+struct ErrorString: View {
+    @Binding var errorString: String
+    var body: some View {
+        HStack{
+            Text(errorString)
+                .fontWeight(.light)
+                .foregroundColor(.red)
+                .font(.footnote)
+                .multilineTextAlignment(.trailing)
+                .animation(.spring(), value: errorString)
+            Spacer()
+        }
+    }
+}
+
+
+struct AngleTextFieldAndGoButton: View {
+    
+    @Binding var userText: String
+    @Binding var handledUserInput: Angle?
+    @Binding var errorString: String
+    @Binding var helpsLineOpticaly: Double
+    
+    var body: some View {
+        HStack{
+            userTextField(userText: $userText)
+            GoButton(
+                handledUserInput: $handledUserInput,
+                userText: $userText,
+                errorString: $errorString,
+                helpsLineOpticaly: $helpsLineOpticaly
+            )
+        }
     }
 }
