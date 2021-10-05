@@ -68,8 +68,6 @@ struct TrigonometryView: View{
                     )
                     .rotationEffect(userAngle!)
                 
-                
-                    
                 // cosLine
                 Line(startPoint: center,
                      lenght: abs(cos(userAngle!.radians)*mainRadiusLenght),
