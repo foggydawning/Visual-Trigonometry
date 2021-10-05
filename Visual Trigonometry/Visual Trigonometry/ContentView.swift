@@ -8,9 +8,56 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @State private var userText: String = ""
+    @State private var handledUserInput: Angle? = nil
+    @State private var errorString: String = " "
+    @State private var helpsLineOpticaly: Double = 0
+    
+    var merginFromEdges : Double = (UIScreen.main.bounds.width <= 375)
+        ? 0.08 : 0.05
+    
+    
+    var widthOfWorkPlace: CGFloat {CGFloat((1 - 2*merginFromEdges)*UIScreen.main.bounds.width)}
+    
     var body: some View {
-        Text("Hello, world!")
-            .padding()
+        GeometryReader{ geometry in
+            HStack{
+                Spacer(minLength: geometry.size.width*merginFromEdges)
+                VStack(alignment: .center){
+                    Spacer()
+                    TrigonometryView(
+                        userAngle: $handledUserInput,
+                        helpsLineOpticaly: $helpsLineOpticaly,
+                        size: widthOfWorkPlace
+                    )
+                        
+                    Spacer()
+                
+                    HStack{
+                        Text(errorString)
+                            .fontWeight(.light)
+                            .foregroundColor(.red)
+                            .font(.footnote)
+                            .multilineTextAlignment(.trailing)
+                            .animation(.spring(), value: errorString)
+                        Spacer()
+                    }
+                    
+                    HStack{
+                        userTextField(userText: $userText)
+                        mainButton(
+                            handledUserInput: $handledUserInput,
+                            userText: $userText,
+                            errorString: $errorString,
+                            helpsLineOpticaly: $helpsLineOpticaly
+                        )
+                    }
+                    Spacer()
+                }
+                Spacer(minLength: geometry.size.width*merginFromEdges)
+            }
+        }.background(Color("Foggy").opacity(0.1))
     }
 }
 
