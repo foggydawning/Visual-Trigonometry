@@ -127,3 +127,38 @@ struct CoordunateSystem: View {
         }.foregroundColor(Color("Forest"))
     }
 }
+
+struct ErrorString: View {
+    @Binding var errorString: String
+    var body: some View {
+        HStack{
+            Text(errorString)
+                .fontWeight(.light)
+                .foregroundColor(.red)
+                .font(.footnote)
+                .multilineTextAlignment(.trailing)
+                .animation(.spring(), value: errorString)
+            Spacer()
+        }
+    }
+}
+
+struct AngleTextFieldAndGoButton: View {
+    
+    @Binding var userText: String
+    @Binding var handledUserInput: Angle?
+    @Binding var errorString: String
+    @Binding var helpsLineOpticaly: Double
+    
+    var body: some View {
+        HStack{
+            userTextField(userText: $userText)
+            GoButton(
+                handledUserInput: $handledUserInput,
+                userText: $userText,
+                errorString: $errorString,
+                helpsLineOpticaly: $helpsLineOpticaly
+            )
+        }
+    }
+}

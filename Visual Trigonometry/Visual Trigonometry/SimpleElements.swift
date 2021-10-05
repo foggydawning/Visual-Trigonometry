@@ -124,7 +124,7 @@ struct userTextField: View {
     }
 }
 
-/// create line as rect
+/// Create horizontal line as rect
 struct Line: Shape {
     
     var startPoint: CGPoint
@@ -150,7 +150,7 @@ struct Line: Shape {
 }
 
 
-struct mainButton: View {
+struct GoButton: View {
     
     @Binding var handledUserInput: Angle?
     @Binding var userText: String
