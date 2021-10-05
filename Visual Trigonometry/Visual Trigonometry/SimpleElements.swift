@@ -54,25 +54,17 @@ struct PointsOnMainCicrle: Shape{
     }
 }
 
-class mainPoint: BasicPoint{
-    var angle: Angle
-    
-    init(size: CGFloat, center: CGPoint, angle: Angle){
-        self.angle = angle
-        super.init(size: size, center: center)
-    }
-    
-    func getView() -> some View{
-        Circle(
-            radius: 7,
-            center: CGPoint(
-                        x: self.size-2,
-                        y: self.size/2
-                    )
-        )   .rotationEffect(angle)
-            .foregroundColor(Color("Terracotta"))
-            .animation(.spring(response: 1.5),
-                       value: angle)
+
+struct mainPoint: Shape{
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        
+        path.addArc(center: CGPoint(x: rect.maxX, y: rect.midY),
+                    radius: 7,
+                    startAngle: .zero,
+                    endAngle: .degrees(360),
+                    clockwise: false)
+        return path
     }
 }
 

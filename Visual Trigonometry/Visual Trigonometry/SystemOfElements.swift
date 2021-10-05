@@ -101,12 +101,11 @@ struct TrigonometryView: View{
                                           y: center.y/size)
                     )
                 
-                mainPoint(
-                    size: size,
-                    center: center,
-                    angle: userAngle!
-                )
-                    .getView()
+                // mainPoint
+                mainPoint()
+                    .rotationEffect(userAngle!)
+                    .foregroundColor(Color("Terracotta"))
+                    .animation(.spring(response: 1.5), value: userAngle)
             }
             Circle(radius: 5, center: center)
                 .fill(Color("Forest"))
