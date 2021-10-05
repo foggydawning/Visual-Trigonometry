@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Foundation
 
 class BasicPoint{
     var size: CGFloat
@@ -17,32 +18,39 @@ class BasicPoint{
     }
 }
 
-class PointsOnMainCicrle: BasicPoint{
-    var angles: [Double]
-    
-    override init(size: CGFloat, center: CGPoint){
-        self.angles = []
-        super.init(size: size, center: center)
-    }
-    
-    func setAngles(){
+struct PointsOnMainCicrle: Shape{
+     
+    let lenghtOfRadius: Double
+    var angles: [Double] = { () -> [Double] in
+        var list : [Double] = []
         for angle in stride(from: 0.0, to: 331.0, by: 30.0){
-            angles.append(angle)
+            list.append(angle)
         }
         for angle in stride(from: 45.0, to: 316.0, by: 90.0){
-            angles.append(angle)
+            list.append(angle)
         }
-    }
+        return list
+    }()
     
-    func getView() -> some View {
-        self.setAngles()
-        let stack = ZStack{
-            ForEach(angles, id: \.self) { angle in
-                Circle(radius: 5, center: CGPoint(x: self.size-2, y: self.size/2))
-                    .rotationEffect(Angle(degrees: angle))
-            }
-        }.opacity(0.6)
-        return stack
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        let radius: Double  = 6
+        for angleInDegrees in self.angles{
+            let angleInRadians : Double = Angle(degrees: angleInDegrees).radians
+            let x: Double = rect.midX + cos(angleInRadians)*lenghtOfRadius
+            let y: Double = rect.midY + sin(angleInRadians)*lenghtOfRadius
+            let centre : CGPoint = .init(x: x, y: y)
+            let startPoint : CGPoint = .init(x: x + radius, y: y)
+            
+            path.move(to: startPoint)
+            path.addArc(center: centre,
+                        radius: radius,
+                        startAngle: .degrees(0),
+                        endAngle: .degrees(360),
+                        clockwise: false)
+            path.closeSubpath()
+        }
+        return path
     }
 }
 
@@ -63,7 +71,8 @@ class mainPoint: BasicPoint{
                     )
         )   .rotationEffect(angle)
             .foregroundColor(.red)
-            .animation(.spring(response: 1.5))
+            .animation(.spring(response: 1.5),
+                       value: angle)
     }
 }
 
@@ -77,7 +86,7 @@ struct Circle: Shape {
     func path(in rect: CGRect) -> Path{
         var path = Path()
         
-        path.addArc(center: self.center, radius: self.radius,
+        path.addArc(center: self.center, radius: self.radius + 2,
                     startAngle: start,
                     endAngle: end,
                     clockwise: (end.degrees >= 0) ? false : true )
@@ -86,23 +95,20 @@ struct Circle: Shape {
 }
 
 
-class Arrow {
-    var size: CGFloat
+struct Arrow: Shape {
+    var size: Double
+    var endPoint: CGPoint
     
-    init(size: CGFloat){
-        self.size = size
-    }
+    var lenght: Double {self.size*0.07}
+    var halfHeight: Double {self.size*0.02}
     
-    var width: CGFloat {self.size*0.07}
-    var height: CGFloat {self.size*0.04}
-    
-    func getView() -> some View{
+    func path(in rect: CGRect) -> Path {
         var path = Path()
-        path.move(to: CGPoint(x: width, y: height/2))
-        path.addLine(to: CGPoint(x: 0.0, y: 0.0))
-        path.addLine(to: CGPoint(x: 0.0, y: height))
-        path.addLine(to: CGPoint(x: width, y: height/2))
-        return path.frame(width: width, height: height)
+        path.move(to: endPoint)
+        path.addLine(to: CGPoint(x: endPoint.x - lenght, y: endPoint.y - halfHeight))
+        path.addLine(to: CGPoint(x: endPoint.x - lenght, y: endPoint.y + halfHeight))
+        path.addLine(to: endPoint)
+        return path
     }
 }
 
@@ -123,46 +129,28 @@ struct userTextField: View {
     }
 }
 
-
-class BasicLine {
-    var width: CGFloat
-    var size: CGFloat
-    init(size: CGFloat, width: CGFloat = 3){
-        self.size = size
-        self.width = width
-    }
-    func getLine() -> some View{
+/// create line as rect
+struct Line: Shape {
+    
+    var startPoint: CGPoint
+    var lenght: Double
+    var width: Double = 3
+    
+    private var halfWidth: Double { width / 2 }
+    
+    func path(in rect: CGRect) -> Path {
+        
+        var lineRect: CGRect {
+            CGRect(x: startPoint.x,
+                   y: startPoint.y - self.halfWidth,
+                   width: lenght,
+                   height: width)
+        }
+        
         var path = Path()
-        path.move(to: CGPoint(x: 0, y: 0))
-        path.addLine(to: CGPoint(x: self.size, y: 0))
-        path.addLine(to: CGPoint(x: self.size, y: self.width))
-        path.addLine(to: CGPoint(x: 0, y: self.width))
-        return path.frame(width: self.size, height: self.width)
-    }
-}
-
-class Radius: BasicLine {
-    var userAngle: Angle
-    var helpsLineOpticaly: Double
-    
-    init(size: CGFloat, userAngle: Angle, helpsLineOpticaly: Double){
-        self.userAngle = userAngle
-        self.helpsLineOpticaly = helpsLineOpticaly
-        super.init(size: size, width: 3.25)
-    }
-    
-    func getRadiusView() -> some View {
-        let view: some View = super.getLine()
-        let radiusView: some View = view
-            .position(x: self.size*1.5, y: self.size+2)
-            .foregroundColor(.blue)
-            .opacity(self.helpsLineOpticaly)
-            .animation(
-                .spring(response: (self.helpsLineOpticaly == 0) ? 0 : 1.5)
-                    .delay((self.helpsLineOpticaly == 0) ? 0 : 1.7)
-            )
-            .rotationEffect(self.userAngle)
-        return radiusView
+        
+        path.addRect(lineRect)
+        return path
     }
 }
 

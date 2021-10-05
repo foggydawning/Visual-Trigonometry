@@ -37,7 +37,7 @@ struct ContentView: View {
                             .foregroundColor(.red)
                             .font(.footnote)
                             .multilineTextAlignment(.trailing)
-                            .animation(.spring())
+ 
                         Spacer()
                     }
                     HStack{

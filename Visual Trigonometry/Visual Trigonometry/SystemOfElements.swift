@@ -12,7 +12,8 @@ struct TrigonometryView: View{
     @Binding var userAngle: Angle?
     @Binding var helpsLineOpticaly: Double
     
-    var size: CGFloat
+    
+    var size: Double
     var center: CGPoint {
         CGPoint(x: size/2, y: size/2)
     }
@@ -24,13 +25,15 @@ struct TrigonometryView: View{
     
     var body: some View{
         ZStack{
-            CoordunateSystem(size: size, center: center)
+            CoordunateSystem(size: size)
             Circle(radius: mainRadiusLenght, center: center)
                 .stroke(lineWidth: 4)
-            PointsOnMainCicrle(size: size, center: center).getView()
+            PointsOnMainCicrle(lenghtOfRadius: size/2)
+                .opacity(0.6)
+                
             if userAngle != nil{
                 Circle(
-                    radius: 20,
+                    radius: 17,
                     center: center,
                     end: Angle(
                         degrees: userAngle!
@@ -42,31 +45,39 @@ struct TrigonometryView: View{
                     .foregroundColor(.green)
                     .opacity(helpsLineOpticaly)
                     .animation(
-                        .spring(response: (helpsLineOpticaly == 0) ? 0 : 1.5)
+                            .spring(response: (helpsLineOpticaly == 0) ? 0 : 1.5)
                             .delay((helpsLineOpticaly == 0) ? 0 : 1.7)
+                        ,value: helpsLineOpticaly
                     )
-                Radius(
-                    size: mainRadiusLenght,
-                    userAngle: userAngle!,
-                    helpsLineOpticaly: helpsLineOpticaly
-                ).getRadiusView()
                 
                 // cosLine
-                
-                BasicLine(size: abs(cos(userAngle!.radians)*mainRadiusLenght),
-                          width: 4)
-                    .getLine()
-                    .position(x: size/2 + abs(cos(userAngle!.radians))*mainRadiusLenght/2,
-                              y: size/2)
+                Line(startPoint: center,
+                     lenght: abs(cos(userAngle!.radians)*mainRadiusLenght),
+                     width: 4)
                     .foregroundColor(Color.purple)
                     .opacity(helpsLineOpticaly)
                     .animation(
-                        .spring()
+                            .spring(response: (helpsLineOpticaly == 0) ? 0 : 1.5)
                             .delay((helpsLineOpticaly == 0) ? 0 : 1.7)
+                        ,value: helpsLineOpticaly
                     )
                     .rotationEffect(
                         (cos(userAngle!.radians)>=0) ? Angle(degrees: 0) : Angle(degrees: 180)
                     )
+                
+
+                // radius
+                Line(startPoint: center, lenght: size/2, width: 4)
+                    .foregroundColor(.blue)
+                    .opacity(helpsLineOpticaly)
+                    .animation(
+                            .spring(response: (helpsLineOpticaly == 0) ? 0 : 1.5)
+                            .delay((helpsLineOpticaly == 0) ? 0 : 1.7)
+                        ,value: helpsLineOpticaly
+                    )
+                    .rotationEffect(userAngle!)
+                
+                
 
                 
                 mainPoint(
@@ -84,18 +95,15 @@ struct TrigonometryView: View{
 
 
 struct CoordunateSystem: View {
-    var size: CGFloat
-    var center: CGPoint
+    var size: Double
     var body: some View{
         ZStack{
-            Arrow(size: size).getView().position(x: size-size*0.04, y: size/2)
-            Arrow(size: size).getView()
-                .rotationEffect(Angle(degrees: -90.0))
-                .position(x: size/2, y: size*0.04)
-            BasicLine(size: size).getLine().position(x: size/2, y: size/2)
-            BasicLine(size: size).getLine()
-                .position(x: size/2, y: size/2)
-                .rotationEffect(Angle(degrees: 90.0))
+            Arrow(size: size, endPoint: CGPoint(x: size, y: size/2))
+            Arrow(size: size, endPoint: CGPoint(x: size, y: size/2))
+                .rotationEffect(Angle(degrees: -90))
+            Line(startPoint: CGPoint(x: 0, y: size/2), lenght: size)
+            Line(startPoint: CGPoint(x: 0, y: size/2), lenght: size)
+                .rotation(Angle(degrees: 90))
         }
     }
 }

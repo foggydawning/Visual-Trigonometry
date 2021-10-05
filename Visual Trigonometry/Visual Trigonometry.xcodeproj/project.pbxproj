@@ -8,13 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		D3883F9926FB561D00E4E545 /* Visual_TrigonometryApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3883F9826FB561D00E4E545 /* Visual_TrigonometryApp.swift */; };
-		D3883F9B26FB561D00E4E545 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3883F9A26FB561D00E4E545 /* ContentView.swift */; };
 		D3883F9D26FB562100E4E545 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D3883F9C26FB562100E4E545 /* Assets.xcassets */; };
 		D3883FA026FB562100E4E545 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D3883F9F26FB562100E4E545 /* Preview Assets.xcassets */; };
 		D3983F582700DFB800FE35C0 /* SimpleElements.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3983F572700DFB800FE35C0 /* SimpleElements.swift */; };
 		D3983F5A2700E08600FE35C0 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3983F592700E08600FE35C0 /* Errors.swift */; };
 		D3983F5C2700E09D00FE35C0 /* Handler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3983F5B2700E09D00FE35C0 /* Handler.swift */; };
 		D3983F5E2700E11E00FE35C0 /* SystemOfElements.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3983F5D2700E11E00FE35C0 /* SystemOfElements.swift */; };
+		D3DC46EB270B905400BB0797 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3883F9A26FB561D00E4E545 /* ContentView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -152,7 +152,7 @@
 			files = (
 				D3983F5E2700E11E00FE35C0 /* SystemOfElements.swift in Sources */,
 				D3983F5A2700E08600FE35C0 /* Errors.swift in Sources */,
-				D3883F9B26FB561D00E4E545 /* ContentView.swift in Sources */,
+				D3DC46EB270B905400BB0797 /* ContentView.swift in Sources */,
 				D3883F9926FB561D00E4E545 /* Visual_TrigonometryApp.swift in Sources */,
 				D3983F5C2700E09D00FE35C0 /* Handler.swift in Sources */,
 				D3983F582700DFB800FE35C0 /* SimpleElements.swift in Sources */,
@@ -288,7 +288,7 @@
 				DEVELOPMENT_TEAM = M52WLQFE2R;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "Visual Trigonometry/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -310,7 +310,7 @@
 				DEVELOPMENT_TEAM = M52WLQFE2R;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "Visual Trigonometry/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
