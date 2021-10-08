@@ -11,19 +11,18 @@ import Foundation
 struct TrigonometryView: View{
     @EnvironmentObject var states: States
     
-    var size: Double
     var center: CGPoint {
-        CGPoint(x: size/2, y: size/2)
+        CGPoint(x: states.widthOfWorkSpace/2, y: states.widthOfWorkSpace/2)
     }
     
     /// Radius of the main circle
     private var mainRadiusLenght: CGFloat{
-        size/2 - 2
+        states.widthOfWorkSpace/2 - 2
     }
     
     var body: some View{
         ZStack{
-            CoordunateSystem(size: size)
+            CoordunateSystem(size: states.widthOfWorkSpace)
             
             // mainCircle
             Circle(radius: mainRadiusLenght, center: center)
@@ -31,7 +30,7 @@ struct TrigonometryView: View{
                 .foregroundColor(Color("Forest"))
             
             //0, 30, 45, 90, 120, 135, 150, 180, ...
-            PointsOnMainCicrle(lenghtOfRadius: size/2)
+            PointsOnMainCicrle(lenghtOfRadius: states.widthOfWorkSpace/2)
                 .foregroundColor(Color("Forest"))
                 .opacity(0.6)
             
@@ -57,7 +56,7 @@ struct TrigonometryView: View{
                     )
                 
                 // radius
-                Line(startPoint: center, lenght: size/2, width: 5)
+                Line(startPoint: center, lenght: states.widthOfWorkSpace/2, width: 5)
                     .foregroundColor(Color("Stone Wall"))
                     .opacity(states.helpsLineOpticaly)
                     .animation(
@@ -97,8 +96,9 @@ struct TrigonometryView: View{
                     )
                     .rotationEffect(
                         (sin(states.handledUserInput!.radians)>=0) ? .degrees(90) : .degrees(270),
-                        anchor: .init(x: (center.x + cos(states.handledUserInput!.radians)*mainRadiusLenght)/size,
-                                          y: center.y/size)
+                        anchor: .init(
+                            x: (center.x + cos(states.handledUserInput!.radians)*mainRadiusLenght)/states.widthOfWorkSpace,
+                            y: center.y/states.widthOfWorkSpace)
                     )
                 
                 // mainPoint
@@ -109,7 +109,7 @@ struct TrigonometryView: View{
             }
             Circle(radius: 5, center: center)
                 .fill(Color("Forest"))
-        }.frame(height: size)
+        }.frame(height: states.widthOfWorkSpace)
     }
 }
 
