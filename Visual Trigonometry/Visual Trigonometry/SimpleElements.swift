@@ -96,9 +96,9 @@ struct Arrow: Shape {
 
 
 struct userTextField: View {
-    @Binding var userText: String
+    @EnvironmentObject var states: States
     var body: some View {
-        TextField("Input your angle here", text: $userText)
+        TextField("Input your angle here", text: $states.userText)
             .multilineTextAlignment(.center)
             .frame(alignment: .center)
             .padding(.all, 15)
@@ -144,7 +144,6 @@ struct Line: Shape {
 struct GoButton: View {
     @EnvironmentObject var states: States
     @Binding var handledUserInput: Angle?
-    @Binding var userText: String
     @Binding var helpsLineOpticaly: Double
     
     var body: some View {
@@ -167,7 +166,7 @@ struct GoButton: View {
                 handledUserInput = Angle(degrees: 0)
             })
             .onEnded({ _ in
-                let handler = Handler(userText: userText)
+                let handler = Handler(userText: states.userText)
                 handler.handle()
                 handledUserInput = handler.handledUserInput
                 states.errorString = handler.errorString

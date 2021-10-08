@@ -9,8 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @ObservedObject var states = States()
-    @State private var userText: String = ""
+    @StateObject var states = States()
     @State private var handledUserInput: Angle? = nil
     @State private var helpsLineOpticaly: Double = 0
     
@@ -33,7 +32,6 @@ struct ContentView: View {
                     Spacer()
                     ErrorString()
                     AngleTextFieldAndGoButton(
-                        userText: $userText,
                         handledUserInput: $handledUserInput,
                         helpsLineOpticaly: $helpsLineOpticaly)
                     Spacer()

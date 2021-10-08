@@ -149,18 +149,17 @@ struct ErrorString: View {
 struct AngleTextFieldAndGoButton: View {
     @EnvironmentObject var states: States
     
-    @Binding var userText: String
     @Binding var handledUserInput: Angle?
     @Binding var helpsLineOpticaly: Double
     
     var body: some View {
         HStack{
-            userTextField(userText: $userText)
+            userTextField()
             GoButton(
                 handledUserInput: $handledUserInput,
-                userText: $userText,
                 helpsLineOpticaly: $helpsLineOpticaly
             )
         }
+        
     }
 }
