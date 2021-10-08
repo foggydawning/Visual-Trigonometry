@@ -9,8 +9,8 @@ import SwiftUI
 
 struct ContentView: View {
     
+    @ObservedObject var states = States()
     @State private var userText: String = ""
-    @State private var errorString: String = " "
     @State private var handledUserInput: Angle? = nil
     @State private var helpsLineOpticaly: Double = 0
     
@@ -31,17 +31,19 @@ struct ContentView: View {
                         size: widthOfWorkPlace
                     )
                     Spacer()
-                    ErrorString(errorString: $errorString)
+                    ErrorString()
                     AngleTextFieldAndGoButton(
                         userText: $userText,
                         handledUserInput: $handledUserInput,
-                        errorString: $errorString,
                         helpsLineOpticaly: $helpsLineOpticaly)
                     Spacer()
                 }
                 Spacer(minLength: geometry.size.width*merginFromEdges)
             }
-        }.background(Color("Foggy").opacity(0.15))
+            .environmentObject(states)
+        }
+        .background(Color("Foggy").opacity(0.15))
+        
     }
 }
 

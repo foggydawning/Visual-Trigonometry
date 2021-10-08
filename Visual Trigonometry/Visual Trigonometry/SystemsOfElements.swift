@@ -131,15 +131,15 @@ struct CoordunateSystem: View {
 
 
 struct ErrorString: View {
-    @Binding var errorString: String
+    @EnvironmentObject var states: States
     var body: some View {
         HStack{
-            Text(errorString)
+            Text(states.errorString)
                 .fontWeight(.light)
                 .foregroundColor(.red)
                 .font(.footnote)
                 .multilineTextAlignment(.trailing)
-                .animation(.spring(), value: errorString)
+                .animation(.spring(), value: states.errorString)
             Spacer()
         }
     }
@@ -147,10 +147,10 @@ struct ErrorString: View {
 
 
 struct AngleTextFieldAndGoButton: View {
+    @EnvironmentObject var states: States
     
     @Binding var userText: String
     @Binding var handledUserInput: Angle?
-    @Binding var errorString: String
     @Binding var helpsLineOpticaly: Double
     
     var body: some View {
@@ -159,7 +159,6 @@ struct AngleTextFieldAndGoButton: View {
             GoButton(
                 handledUserInput: $handledUserInput,
                 userText: $userText,
-                errorString: $errorString,
                 helpsLineOpticaly: $helpsLineOpticaly
             )
         }

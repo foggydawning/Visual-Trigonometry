@@ -142,10 +142,9 @@ struct Line: Shape {
 
 
 struct GoButton: View {
-    
+    @EnvironmentObject var states: States
     @Binding var handledUserInput: Angle?
     @Binding var userText: String
-    @Binding var errorString: String
     @Binding var helpsLineOpticaly: Double
     
     var body: some View {
@@ -171,7 +170,7 @@ struct GoButton: View {
                 let handler = Handler(userText: userText)
                 handler.handle()
                 handledUserInput = handler.handledUserInput
-                errorString = handler.errorString
+                states.errorString = handler.errorString
                 helpsLineOpticaly = 1
             })
         )
