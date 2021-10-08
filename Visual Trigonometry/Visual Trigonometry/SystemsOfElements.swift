@@ -10,7 +10,6 @@ import Foundation
 
 struct TrigonometryView: View{
     @EnvironmentObject var states: States
-    @Binding var helpsLineOpticaly: Double
     
     var size: Double
     var center: CGPoint {
@@ -50,21 +49,21 @@ struct TrigonometryView: View{
                 )
                     .stroke(lineWidth: 4)
                     .foregroundColor(Color("Lime"))
-                    .opacity(helpsLineOpticaly)
+                    .opacity(states.helpsLineOpticaly)
                     .animation(
-                            .spring(response: (helpsLineOpticaly == 0) ? 0 : 1.5)
-                            .delay((helpsLineOpticaly == 0) ? 0 : 1.7)
-                        ,value: helpsLineOpticaly
+                            .spring(response: (states.helpsLineOpticaly == 0) ? 0 : 1.5)
+                            .delay((states.helpsLineOpticaly == 0) ? 0 : 1.7)
+                        ,value: states.helpsLineOpticaly
                     )
                 
                 // radius
                 Line(startPoint: center, lenght: size/2, width: 5)
                     .foregroundColor(Color("Stone Wall"))
-                    .opacity(helpsLineOpticaly)
+                    .opacity(states.helpsLineOpticaly)
                     .animation(
-                            .spring(response: (helpsLineOpticaly == 0) ? 0 : 1.5)
-                            .delay((helpsLineOpticaly == 0) ? 0 : 1.7)
-                        ,value: helpsLineOpticaly
+                            .spring(response: (states.helpsLineOpticaly == 0) ? 0 : 1.5)
+                            .delay((states.helpsLineOpticaly == 0) ? 0 : 1.7)
+                        ,value: states.helpsLineOpticaly
                     )
                     .rotationEffect(states.handledUserInput!)
                 
@@ -73,11 +72,11 @@ struct TrigonometryView: View{
                      lenght: abs(cos(states.handledUserInput!.radians)*mainRadiusLenght),
                      width: 5)
                     .foregroundColor(Color("Biscotti"))
-                    .opacity(helpsLineOpticaly)
+                    .opacity(states.helpsLineOpticaly)
                     .animation(
-                            .spring(response: (helpsLineOpticaly == 0) ? 0 : 1.5)
-                            .delay((helpsLineOpticaly == 0) ? 0 : 1.7)
-                        ,value: helpsLineOpticaly
+                            .spring(response: (states.helpsLineOpticaly == 0) ? 0 : 1.5)
+                            .delay((states.helpsLineOpticaly == 0) ? 0 : 1.7)
+                        ,value: states.helpsLineOpticaly
                     )
                     .rotationEffect(
                         (cos(states.handledUserInput!.radians)>=0) ? .zero : .degrees(180)
@@ -90,11 +89,11 @@ struct TrigonometryView: View{
                      width: 5.5)
                     
                     .foregroundColor(Color("Honey"))
-                    .opacity(helpsLineOpticaly)
+                    .opacity(states.helpsLineOpticaly)
                     .animation(
-                            .spring(response: (helpsLineOpticaly == 0) ? 0 : 1.5)
-                            .delay((helpsLineOpticaly == 0) ? 0 : 1.7)
-                        ,value: helpsLineOpticaly
+                            .spring(response: (states.helpsLineOpticaly == 0) ? 0 : 1.5)
+                            .delay((states.helpsLineOpticaly == 0) ? 0 : 1.7)
+                        ,value: states.helpsLineOpticaly
                     )
                     .rotationEffect(
                         (sin(states.handledUserInput!.radians)>=0) ? .degrees(90) : .degrees(270),
@@ -149,15 +148,12 @@ struct ErrorString: View {
 struct AngleTextFieldAndGoButton: View {
     @EnvironmentObject var states: States
     
-    @Binding var helpsLineOpticaly: Double
-    
     var body: some View {
         HStack{
             userTextField()
             GoButton(
                 handledUserInput: $states.handledUserInput,
-                helpsLineOpticaly: $helpsLineOpticaly
-            )
+                helpsLineOpticaly: $states.helpsLineOpticaly)
         }
         
     }

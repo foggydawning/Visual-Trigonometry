@@ -10,7 +10,6 @@ import SwiftUI
 struct ContentView: View {
     
     @StateObject var states = States()
-    @State private var helpsLineOpticaly: Double = 0
     
     var merginFromEdges : Double = (UIScreen.main.bounds.width <= 375)
         ? 0.08 : 0.05
@@ -23,14 +22,10 @@ struct ContentView: View {
                 Spacer(minLength: geometry.size.width*merginFromEdges)
                 VStack(alignment: .center){
                     Spacer()
-                    TrigonometryView(
-                        helpsLineOpticaly: $helpsLineOpticaly,
-                        size: widthOfWorkPlace
-                    )
+                    TrigonometryView(size: widthOfWorkPlace)
                     Spacer()
                     ErrorString()
-                    AngleTextFieldAndGoButton(
-                        helpsLineOpticaly: $helpsLineOpticaly)
+                    AngleTextFieldAndGoButton()
                     Spacer()
                 }
                 Spacer(minLength: geometry.size.width*merginFromEdges)
