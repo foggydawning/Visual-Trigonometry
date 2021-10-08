@@ -9,8 +9,7 @@ import SwiftUI
 import Foundation
 
 struct TrigonometryView: View{
-    @Binding var userAngle: Angle?
-    @Binding var helpsLineOpticaly: Double
+    @EnvironmentObject var states: States
     
     var size: Double
     var center: CGPoint {
@@ -36,77 +35,77 @@ struct TrigonometryView: View{
                 .foregroundColor(Color("Forest"))
                 .opacity(0.6)
             
-            if userAngle != nil{
+            if states.handledUserInput != nil{
                 
                 // angle
                 Circle(
                     radius: 17,
                     center: center,
                     end: Angle(
-                        degrees: userAngle!
+                        degrees: states.handledUserInput!
                             .degrees
                             .truncatingRemainder(dividingBy: 360.0)
                     )
                 )
                     .stroke(lineWidth: 4)
                     .foregroundColor(Color("Lime"))
-                    .opacity(helpsLineOpticaly)
+                    .opacity(states.helpsLineOpticaly)
                     .animation(
-                            .spring(response: (helpsLineOpticaly == 0) ? 0 : 1.5)
-                            .delay((helpsLineOpticaly == 0) ? 0 : 1.7)
-                        ,value: helpsLineOpticaly
+                            .spring(response: (states.helpsLineOpticaly == 0) ? 0 : 1.5)
+                            .delay((states.helpsLineOpticaly == 0) ? 0 : 1.7)
+                        ,value: states.helpsLineOpticaly
                     )
                 
                 // radius
                 Line(startPoint: center, lenght: size/2, width: 5)
                     .foregroundColor(Color("Stone Wall"))
-                    .opacity(helpsLineOpticaly)
+                    .opacity(states.helpsLineOpticaly)
                     .animation(
-                            .spring(response: (helpsLineOpticaly == 0) ? 0 : 1.5)
-                            .delay((helpsLineOpticaly == 0) ? 0 : 1.7)
-                        ,value: helpsLineOpticaly
+                            .spring(response: (states.helpsLineOpticaly == 0) ? 0 : 1.5)
+                            .delay((states.helpsLineOpticaly == 0) ? 0 : 1.7)
+                        ,value: states.helpsLineOpticaly
                     )
-                    .rotationEffect(userAngle!)
+                    .rotationEffect(states.handledUserInput!)
                 
                 // cosLine
                 Line(startPoint: center,
-                     lenght: abs(cos(userAngle!.radians)*mainRadiusLenght),
+                     lenght: abs(cos(states.handledUserInput!.radians)*mainRadiusLenght),
                      width: 5)
                     .foregroundColor(Color("Biscotti"))
-                    .opacity(helpsLineOpticaly)
+                    .opacity(states.helpsLineOpticaly)
                     .animation(
-                            .spring(response: (helpsLineOpticaly == 0) ? 0 : 1.5)
-                            .delay((helpsLineOpticaly == 0) ? 0 : 1.7)
-                        ,value: helpsLineOpticaly
+                            .spring(response: (states.helpsLineOpticaly == 0) ? 0 : 1.5)
+                            .delay((states.helpsLineOpticaly == 0) ? 0 : 1.7)
+                        ,value: states.helpsLineOpticaly
                     )
                     .rotationEffect(
-                        (cos(userAngle!.radians)>=0) ? .zero : .degrees(180)
+                        (cos(states.handledUserInput!.radians)>=0) ? .zero : .degrees(180)
                     )
                 
                 // sinLine
-                Line(startPoint: .init(x: center.x + cos(userAngle!.radians)*mainRadiusLenght,
+                Line(startPoint: .init(x: center.x + cos(states.handledUserInput!.radians)*mainRadiusLenght,
                                        y: center.y),
-                     lenght: abs(sin(userAngle!.radians)*mainRadiusLenght),
+                     lenght: abs(sin(states.handledUserInput!.radians)*mainRadiusLenght),
                      width: 5.5)
                     
                     .foregroundColor(Color("Honey"))
-                    .opacity(helpsLineOpticaly)
+                    .opacity(states.helpsLineOpticaly)
                     .animation(
-                            .spring(response: (helpsLineOpticaly == 0) ? 0 : 1.5)
-                            .delay((helpsLineOpticaly == 0) ? 0 : 1.7)
-                        ,value: helpsLineOpticaly
+                            .spring(response: (states.helpsLineOpticaly == 0) ? 0 : 1.5)
+                            .delay((states.helpsLineOpticaly == 0) ? 0 : 1.7)
+                        ,value: states.helpsLineOpticaly
                     )
                     .rotationEffect(
-                        (sin(userAngle!.radians)>=0) ? .degrees(90) : .degrees(270),
-                        anchor: .init(x: (center.x + cos(userAngle!.radians)*mainRadiusLenght)/size,
+                        (sin(states.handledUserInput!.radians)>=0) ? .degrees(90) : .degrees(270),
+                        anchor: .init(x: (center.x + cos(states.handledUserInput!.radians)*mainRadiusLenght)/size,
                                           y: center.y/size)
                     )
                 
                 // mainPoint
                 mainPoint()
-                    .rotationEffect(userAngle!)
+                    .rotationEffect(states.handledUserInput!)
                     .foregroundColor(Color("Terracotta"))
-                    .animation(.spring(response: 1.5), value: userAngle)
+                    .animation(.spring(response: 1.5), value: states.handledUserInput)
             }
             Circle(radius: 5, center: center)
                 .fill(Color("Forest"))
@@ -131,15 +130,15 @@ struct CoordunateSystem: View {
 
 
 struct ErrorString: View {
-    @Binding var errorString: String
+    @EnvironmentObject var states: States
     var body: some View {
         HStack{
-            Text(errorString)
+            Text(states.errorString)
                 .fontWeight(.light)
                 .foregroundColor(.red)
                 .font(.footnote)
                 .multilineTextAlignment(.trailing)
-                .animation(.spring(), value: errorString)
+                .animation(.spring(), value: states.errorString)
             Spacer()
         }
     }
@@ -147,21 +146,15 @@ struct ErrorString: View {
 
 
 struct AngleTextFieldAndGoButton: View {
-    
-    @Binding var userText: String
-    @Binding var handledUserInput: Angle?
-    @Binding var errorString: String
-    @Binding var helpsLineOpticaly: Double
+    @EnvironmentObject var states: States
     
     var body: some View {
         HStack{
-            userTextField(userText: $userText)
+            userTextField()
             GoButton(
-                handledUserInput: $handledUserInput,
-                userText: $userText,
-                errorString: $errorString,
-                helpsLineOpticaly: $helpsLineOpticaly
-            )
+                handledUserInput: $states.handledUserInput,
+                helpsLineOpticaly: $states.helpsLineOpticaly)
         }
+        
     }
 }
