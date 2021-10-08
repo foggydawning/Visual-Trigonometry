@@ -9,7 +9,7 @@ import SwiftUI
 import Foundation
 
 struct TrigonometryView: View{
-    @Binding var userAngle: Angle?
+    @EnvironmentObject var states: States
     @Binding var helpsLineOpticaly: Double
     
     var size: Double
@@ -36,14 +36,14 @@ struct TrigonometryView: View{
                 .foregroundColor(Color("Forest"))
                 .opacity(0.6)
             
-            if userAngle != nil{
+            if states.handledUserInput != nil{
                 
                 // angle
                 Circle(
                     radius: 17,
                     center: center,
                     end: Angle(
-                        degrees: userAngle!
+                        degrees: states.handledUserInput!
                             .degrees
                             .truncatingRemainder(dividingBy: 360.0)
                     )
@@ -66,11 +66,11 @@ struct TrigonometryView: View{
                             .delay((helpsLineOpticaly == 0) ? 0 : 1.7)
                         ,value: helpsLineOpticaly
                     )
-                    .rotationEffect(userAngle!)
+                    .rotationEffect(states.handledUserInput!)
                 
                 // cosLine
                 Line(startPoint: center,
-                     lenght: abs(cos(userAngle!.radians)*mainRadiusLenght),
+                     lenght: abs(cos(states.handledUserInput!.radians)*mainRadiusLenght),
                      width: 5)
                     .foregroundColor(Color("Biscotti"))
                     .opacity(helpsLineOpticaly)
@@ -80,13 +80,13 @@ struct TrigonometryView: View{
                         ,value: helpsLineOpticaly
                     )
                     .rotationEffect(
-                        (cos(userAngle!.radians)>=0) ? .zero : .degrees(180)
+                        (cos(states.handledUserInput!.radians)>=0) ? .zero : .degrees(180)
                     )
                 
                 // sinLine
-                Line(startPoint: .init(x: center.x + cos(userAngle!.radians)*mainRadiusLenght,
+                Line(startPoint: .init(x: center.x + cos(states.handledUserInput!.radians)*mainRadiusLenght,
                                        y: center.y),
-                     lenght: abs(sin(userAngle!.radians)*mainRadiusLenght),
+                     lenght: abs(sin(states.handledUserInput!.radians)*mainRadiusLenght),
                      width: 5.5)
                     
                     .foregroundColor(Color("Honey"))
@@ -97,16 +97,16 @@ struct TrigonometryView: View{
                         ,value: helpsLineOpticaly
                     )
                     .rotationEffect(
-                        (sin(userAngle!.radians)>=0) ? .degrees(90) : .degrees(270),
-                        anchor: .init(x: (center.x + cos(userAngle!.radians)*mainRadiusLenght)/size,
+                        (sin(states.handledUserInput!.radians)>=0) ? .degrees(90) : .degrees(270),
+                        anchor: .init(x: (center.x + cos(states.handledUserInput!.radians)*mainRadiusLenght)/size,
                                           y: center.y/size)
                     )
                 
                 // mainPoint
                 mainPoint()
-                    .rotationEffect(userAngle!)
+                    .rotationEffect(states.handledUserInput!)
                     .foregroundColor(Color("Terracotta"))
-                    .animation(.spring(response: 1.5), value: userAngle)
+                    .animation(.spring(response: 1.5), value: states.handledUserInput)
             }
             Circle(radius: 5, center: center)
                 .fill(Color("Forest"))
@@ -149,14 +149,13 @@ struct ErrorString: View {
 struct AngleTextFieldAndGoButton: View {
     @EnvironmentObject var states: States
     
-    @Binding var handledUserInput: Angle?
     @Binding var helpsLineOpticaly: Double
     
     var body: some View {
         HStack{
             userTextField()
             GoButton(
-                handledUserInput: $handledUserInput,
+                handledUserInput: $states.handledUserInput,
                 helpsLineOpticaly: $helpsLineOpticaly
             )
         }
