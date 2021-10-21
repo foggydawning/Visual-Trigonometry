@@ -65,7 +65,7 @@ struct TrigonometryView: View{
                         ,value: states.helpsLineOpticaly
                     )
                     .rotationEffect(states.handledUserInput!)
-                
+
                 // cosLine
                 Line(startPoint: center,
                      lenght: abs(cos(states.handledUserInput!.radians)*mainRadiusLenght),
@@ -123,7 +123,7 @@ struct CoordunateSystem: View {
                 .rotationEffect(Angle(degrees: -90))
             Line(startPoint: CGPoint(x: 0, y: size/2), lenght: size, width: 4)
             Line(startPoint: CGPoint(x: 0, y: size/2), lenght: size, width: 4)
-                .rotation(Angle(degrees: 90))
+                .rotation(.degrees(90))
         }.foregroundColor(Color("Forest"))
     }
 }
@@ -132,14 +132,16 @@ struct CoordunateSystem: View {
 struct ErrorString: View {
     @EnvironmentObject var states: States
     var body: some View {
-        HStack{
-            Text(states.errorString)
-                .fontWeight(.light)
-                .foregroundColor(.red)
-                .font(.footnote)
-                .multilineTextAlignment(.trailing)
-                .animation(.spring(), value: states.errorString)
-            Spacer()
+        if states.errorString != ""{
+            HStack{
+                Text(states.errorString)
+                    .fontWeight(.light)
+                    .foregroundColor(.red)
+                    .font(.footnote)
+                    .multilineTextAlignment(.trailing)
+                    .animation(.spring(), value: states.errorString)
+                Spacer()
+            }.transition(.scale)
         }
     }
 }
@@ -156,5 +158,36 @@ struct AngleTextFieldAndGoButton: View {
                 helpsLineOpticaly: $states.helpsLineOpticaly)
         }
         
+    }
+}
+
+
+struct TrigonometricValues: View {
+    @EnvironmentObject var states: States
+    var body: some View{
+        if states.showTrigonometryValues{
+            GeometryReader{geometry in
+                ZStack{
+                    HStack{
+                        Spacer(minLength: 5)
+                        TrigonometricFuncAndValue("Sin")
+                        Spacer(minLength: 20)
+                        TrigonometricFuncAndValue("Cos")
+                        Spacer(minLength: 20)
+                        TrigonometricFuncAndValue("Tg")
+                        Spacer(minLength: 20)
+                        TrigonometricFuncAndValue("Ctg")
+                        Spacer(minLength: 5)
+                    }
+                }
+            }
+            .frame(height: 40)
+            .padding(14)
+            .overlay(
+                RoundedRectangle(cornerRadius: 30)
+                    .stroke(Color("Pine"), lineWidth: 3)
+                )
+            .transition(.scale)
+        }
     }
 }

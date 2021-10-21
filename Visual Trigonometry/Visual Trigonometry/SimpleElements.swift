@@ -98,7 +98,19 @@ struct Arrow: Shape {
 struct userTextField: View {
     @EnvironmentObject var states: States
     var body: some View {
-        TextField("Input your angle here", text: $states.userText)
+        TextField("Input your angle here",
+                  text: $states.userText,
+                  onEditingChanged: { (isBegin) in
+            if isBegin == true{
+                withAnimation{
+                    states.showTrigonometryValues = false
+                }
+            } else{
+                withAnimation{
+                    states.showTrigonometryValues = true
+                }
+            }}
+        )
             .multilineTextAlignment(.center)
             .frame(alignment: .center)
             .padding(.all, 15)
@@ -176,3 +188,56 @@ struct GoButton: View {
     }
 }
 
+
+struct TrigonometricFuncAndValue: View {
+    @EnvironmentObject var states: States
+    
+    var trigonometricFunc: String
+    var value: Double? {getValue()}
+    
+    init(_ trigonometricFunc: String){
+        self.trigonometricFunc = trigonometricFunc
+    }
+    
+    func getValue() -> Double?{
+        var radians: Double
+        if states.handledUserInput == nil {
+            return -2.0
+        } else{
+            radians = -states.handledUserInput!.radians
+        }
+        switch self.trigonometricFunc {
+        case "Sin":
+            return sin(radians)
+        case "Cos":
+            return cos(radians)
+        case "Tg":
+            return (round(cos(radians)) == 0.0 && abs(cos(radians)) < 0.00001) ?
+                    (sin(radians) > 0 ? Double("Inf") : Double("-Inf")):
+                    sin(radians)/cos(radians)
+        default:
+            return (round(sin(radians)) == 0.0)  && abs(sin(radians)) < 0.00001 ?
+                    (cos(radians) > 0 ? Double("Inf") : Double("-Inf")):
+                    cos(radians)/sin(radians)
+        }
+    }
+    
+    var body: some View{
+        VStack{
+            HStack{
+                Text("\(trigonometricFunc):")
+                    .fontWeight(.bold)
+                    .foregroundColor(Color("Forest"))
+                    .lineLimit(1)
+                Spacer()
+            }
+            Spacer().frame(maxHeight: 3)
+            HStack{
+                Spacer()
+                Text(value == -2 ? "-" : "\(value!, specifier: "%.2f")")
+                    .foregroundColor(Color("Forest"))
+                    .lineLimit(1)
+            }
+        }
+    }
+}

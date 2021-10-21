@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import Foundation
+
 
 struct ContentView: View {
     @StateObject var states = States()
@@ -14,9 +16,10 @@ struct ContentView: View {
         HStack{
             Spacer(minLength: states.merginFromEdges)
             VStack(alignment: .center){
-                Spacer()
+                Spacer().frame(maxHeight: 80)
                 TrigonometryView()
                 Spacer()
+                TrigonometricValues()
                 ErrorString()
                 AngleTextFieldAndGoButton()
                 Spacer()
@@ -25,7 +28,6 @@ struct ContentView: View {
         }
         .environmentObject(states)
         .background(Color("Foggy").opacity(0.15))
-        
     }
 }
 
