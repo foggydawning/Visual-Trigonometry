@@ -286,7 +286,6 @@ struct Radius: View{
                         Text("1")
                 }
                 .padding(.bottom)
-                .transition(.scale)
             }
             Line(startPoint: center, lenght: states.widthOfWorkSpace/2, width: 5)
         }
