@@ -57,16 +57,7 @@ struct TrigonometryView: View{
                             ,value: states.helpsLineOpticaly
                         )
                     
-                    // radius
-                    Line(startPoint: center, lenght: states.widthOfWorkSpace/2, width: 5)
-                        .foregroundColor(Color("Stone Wall"))
-                        .opacity(states.helpsLineOpticaly)
-                        .animation(
-                                .spring(response: (states.helpsLineOpticaly == 0) ? 0 : 1.5)
-                                .delay((states.helpsLineOpticaly == 0) ? 0 : 1.7)
-                            ,value: states.helpsLineOpticaly
-                        )
-                        .rotationEffect(states.handledUserInput!)
+                    Radius(center: center)
 
                     // cosLine
                     Line(startPoint: center,
@@ -192,7 +183,7 @@ struct TrigonometricValues: View {
                 RoundedRectangle(cornerRadius: 30)
                     .stroke(Color("Pine"), lineWidth: 4)
                 )
-            .transition(.scale)
+            .transition(.opacity)
         }
     }
 }

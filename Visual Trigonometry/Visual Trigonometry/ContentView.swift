@@ -22,6 +22,8 @@ struct MainScreen: View {
                 AngleTextFieldAndGoButton()
                 SettingsIcon()
             }
+            
+            
             Spacer(minLength: states.merginFromEdges)
         }
         .environmentObject(states)

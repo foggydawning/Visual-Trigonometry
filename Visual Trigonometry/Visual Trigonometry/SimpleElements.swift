@@ -253,6 +253,7 @@ struct SettingsIcon: View{
                 HStack{
                     Button(action: {
                         isClicked.toggle()
+                        states.helpModeIsActive.toggle()
                     }) {
                         Image(systemName: "gear.circle")
                             .renderingMode(.template)
@@ -268,5 +269,34 @@ struct SettingsIcon: View{
         } else{
             Spacer()
         }
+    }
+}
+
+struct Radius: View{
+    var center: CGPoint
+    @EnvironmentObject var states: States
+    
+    var body: some View{
+        ZStack{
+            if states.helpModeIsActive{
+                HStack(alignment: .top){
+                        Spacer()
+                            .padding()
+                            .frame(maxWidth: states.widthOfWorkSpace/2)
+                        Text("1")
+                }
+                .padding(.bottom)
+                .transition(.scale)
+            }
+            Line(startPoint: center, lenght: states.widthOfWorkSpace/2, width: 5)
+        }
+            .foregroundColor(Color("Stone Wall"))
+            .opacity(states.helpsLineOpticaly)
+            .animation(
+                    .spring(response: (states.helpsLineOpticaly == 0) ? 0 : 1.5)
+                    .delay((states.helpsLineOpticaly == 0) ? 0 : 1.7),
+                    value: states.helpsLineOpticaly
+            )
+            .rotationEffect(states.handledUserInput!)
     }
 }
