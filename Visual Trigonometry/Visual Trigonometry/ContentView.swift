@@ -16,13 +16,10 @@ struct MainScreen: View {
         HStack{
             Spacer(minLength: states.merginFromEdges)
             VStack(alignment: .center){
-                Spacer().frame(maxHeight: 80)
                 TrigonometryView()
-                Spacer()
                 TrigonometricValues()
                 ErrorString()
                 AngleTextFieldAndGoButton()
-                
                 SettingsIcon()
             }
             Spacer(minLength: states.merginFromEdges)
