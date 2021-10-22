@@ -168,7 +168,7 @@ struct GoButton: View {
                 .foregroundColor(Color("Forest"))
                 .overlay(
                     RoundedRectangle(cornerRadius: 30)
-                        .stroke(Color("Forest"), lineWidth: 3)
+                        .stroke(Color("Forest"), lineWidth: 4)
                 )
         }
         .simultaneousGesture(
@@ -238,6 +238,35 @@ struct TrigonometricFuncAndValue: View {
                     .foregroundColor(Color("Forest"))
                     .lineLimit(1)
             }
+        }
+    }
+}
+
+struct SettingsIcon: View{
+    @EnvironmentObject var states: States
+    @State private var isClicked: Bool = false
+    
+    var body: some View{
+        if states.showTrigonometryValues{
+            VStack{
+                Spacer().frame(maxHeight: 20)
+                HStack{
+                    Button(action: {
+                        isClicked.toggle()
+                    }) {
+                        Image(systemName: "gear.circle")
+                            .renderingMode(.template)
+                            .resizable()
+                            .frame(width: 45, height: 45)
+                            .foregroundColor(Color("Pine"))
+                            .rotationEffect(isClicked ? .degrees(180) : .zero)
+                            .animation(.spring(), value: isClicked)
+                    }
+                    Spacer()
+                }
+            }.transition(.opacity)
+        } else{
+            Spacer()
         }
     }
 }

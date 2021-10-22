@@ -185,7 +185,7 @@ struct TrigonometricValues: View {
             .padding(14)
             .overlay(
                 RoundedRectangle(cornerRadius: 30)
-                    .stroke(Color("Pine"), lineWidth: 3)
+                    .stroke(Color("Pine"), lineWidth: 4)
                 )
             .transition(.scale)
         }

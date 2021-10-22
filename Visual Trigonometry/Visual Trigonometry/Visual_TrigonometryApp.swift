@@ -11,7 +11,7 @@ import SwiftUI
 struct Visual_TrigonometryApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainScreen()
         }
     }
 }

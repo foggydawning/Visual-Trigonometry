@@ -9,7 +9,7 @@ import SwiftUI
 import Foundation
 
 
-struct ContentView: View {
+struct MainScreen: View {
     @StateObject var states = States()
     
     var body: some View {
@@ -22,7 +22,8 @@ struct ContentView: View {
                 TrigonometricValues()
                 ErrorString()
                 AngleTextFieldAndGoButton()
-                Spacer()
+                
+                SettingsIcon()
             }
             Spacer(minLength: states.merginFromEdges)
         }
@@ -31,8 +32,9 @@ struct ContentView: View {
     }
 }
 
+
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        MainScreen()
     }
 }
