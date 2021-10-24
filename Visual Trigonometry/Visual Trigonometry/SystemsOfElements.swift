@@ -20,6 +20,14 @@ struct TrigonometryView: View{
         states.widthOfWorkSpace/2 - 2
     }
     
+    var trigonometricValues: [String: Double]? {
+        guard let handledUserInput: Angle = states.handledUserInput else {
+            return nil
+        }
+        return [ "cos" : cos(handledUserInput.radians),
+                 "sin" : sin(handledUserInput.radians)]
+    }
+    
     var body: some View{
         VStack{
             Spacer().frame(maxHeight: 80)
@@ -36,84 +44,40 @@ struct TrigonometryView: View{
                     .foregroundColor(Color("Forest"))
                     .opacity(0.6)
                 
-                if states.handledUserInput != nil{
-
-                    // Help Mode
-                    if states.helpModeIsActive{
-                        ZStack{
-                            // 1 text
-                            HStack(alignment: .top){
-                                    Spacer()
-                                        .padding()
-                                        .frame(maxWidth: states.widthOfWorkSpace/2)
-                                    Text("1")
-                                        .fontWeight(.bold)
-                                        .foregroundColor(Color("Stone Wall"))
-                            }
-                                .padding(.bottom)
-                                .rotationEffect(states.handledUserInput!)
-
-                            // cos text
-                            HStack(alignment: .top){
-                                    Spacer()
-                                        .padding()
-                                    .frame(maxWidth: abs(cos(states.handledUserInput!.radians)*mainRadiusLenght)+3.0)
-                                Text("cos")
-                                    .fontWeight(.bold)
-                                    .foregroundColor(Color("Biscotti"))
-                            }
-                                .padding(.bottom)
-                                .rotationEffect(
-                                    (cos(states.handledUserInput!.radians)>=0) ? .zero : .degrees(180)
-                                )
-                        }
-                        .opacity(states.helpsLineOpticaly)
-                    }
+                if trigonometricValues != nil{
                     
                     // radisu
                     Line(startPoint: center, lenght: states.widthOfWorkSpace/2, width: 5)
                         .foregroundColor(Color("Stone Wall"))
                         .opacity(states.helpsLineOpticaly)
-                        .animation(
-                                .spring(response: (states.helpsLineOpticaly == 0) ? 0 : 1.5)
-                                .delay((states.helpsLineOpticaly == 0) ? 0 : 1.7),
-                                value: states.helpsLineOpticaly
-                        )
+                        .animation(animation, value: states.helpsLineOpticaly)
                         .rotationEffect(states.handledUserInput!)
                     
                     // sinLine
-                    Line(startPoint: .init(x: center.x + cos(states.handledUserInput!.radians)*mainRadiusLenght,
+                    Line(startPoint: .init(x: center.x + trigonometricValues!["cos"]!*mainRadiusLenght,
                                            y: center.y),
-                         lenght: abs(sin(states.handledUserInput!.radians)*mainRadiusLenght),
+                         lenght: abs(trigonometricValues!["sin"]!)*mainRadiusLenght,
                          width: 5.5)
                         
                         .foregroundColor(Color("Honey"))
                         .opacity(states.helpsLineOpticaly)
-                        .animation(
-                                .spring(response: (states.helpsLineOpticaly == 0) ? 0 : 1.5)
-                                .delay((states.helpsLineOpticaly == 0) ? 0 : 1.7)
-                            ,value: states.helpsLineOpticaly
-                        )
+                        .animation(animation, value: states.helpsLineOpticaly)
                         .rotationEffect(
-                            (sin(states.handledUserInput!.radians)>=0) ? .degrees(90) : .degrees(270),
+                            trigonometricValues!["sin"]! >= 0 ? .degrees(90) : .degrees(270),
                             anchor: .init(
-                                x: (center.x + cos(states.handledUserInput!.radians)*mainRadiusLenght)/states.widthOfWorkSpace,
+                                x: (center.x + trigonometricValues!["cos"]!*mainRadiusLenght)/states.widthOfWorkSpace,
                                 y: center.y/states.widthOfWorkSpace)
                         )
                     
                     // cosLine
                     Line(startPoint: center,
-                             lenght: abs(cos(states.handledUserInput!.radians)*mainRadiusLenght)+3.0,
+                             lenght: abs(trigonometricValues!["cos"]!)*mainRadiusLenght+3.0,
                              width: 5)
                         .foregroundColor(Color("Biscotti"))
                         .opacity(states.helpsLineOpticaly)
-                        .animation(
-                                .spring(response: (states.helpsLineOpticaly == 0) ? 0 : 1.5)
-                                .delay((states.helpsLineOpticaly == 0) ? 0 : 1.7),
-                                    value: states.helpsLineOpticaly
-                        )
+                        .animation(animation, value: states.helpsLineOpticaly)
                         .rotationEffect(
-                            (cos(states.handledUserInput!.radians)>=0) ? .zero : .degrees(180)
+                            (trigonometricValues!["cos"]!>=0) ? .zero : .degrees(180)
                         )
                     
                     
@@ -130,12 +94,14 @@ struct TrigonometryView: View{
                         .stroke(lineWidth: 4)
                         .foregroundColor(Color("Lime"))
                         .opacity(states.helpsLineOpticaly)
-                        .animation(
-                                .spring(response: (states.helpsLineOpticaly == 0) ? 0 : 1.5)
-                                .delay((states.helpsLineOpticaly == 0) ? 0 : 1.7)
-                            ,value: states.helpsLineOpticaly
-                        )
+                        .animation(animation, value: states.helpsLineOpticaly)
                     
+                    // Help Mode
+                    if states.helpModeIsActive{
+                        HelpModeView(mainRadiusLenght: mainRadiusLenght,
+                                     center: center,
+                                     trigonometricValues: trigonometricValues)
+                    }
                     
                     // mainPoint
                     mainPoint()
@@ -149,6 +115,14 @@ struct TrigonometryView: View{
             Spacer()
         }
         
+        
+        
+    }
+    
+    var animation: Animation{
+        Animation
+            .spring(response: (states.helpsLineOpticaly == 0) ? 0 : 1.5)
+            .delay((states.helpsLineOpticaly == 0) ? 0 : 1.7)
     }
 }
 

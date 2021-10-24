@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		D379FFA82724CC0000C59EEE /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D379FFA72724CC0000C59EEE /* SettingsView.swift */; };
+		D379FFAB2725E35400C59EEE /* HelpModeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D379FFAA2725E35400C59EEE /* HelpModeView.swift */; };
 		D3883F9926FB561D00E4E545 /* Visual_TrigonometryApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3883F9826FB561D00E4E545 /* Visual_TrigonometryApp.swift */; };
 		D3883F9D26FB562100E4E545 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D3883F9C26FB562100E4E545 /* Assets.xcassets */; };
 		D3883FA026FB562100E4E545 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D3883F9F26FB562100E4E545 /* Preview Assets.xcassets */; };
@@ -21,6 +22,7 @@
 
 /* Begin PBXFileReference section */
 		D379FFA72724CC0000C59EEE /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		D379FFAA2725E35400C59EEE /* HelpModeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpModeView.swift; sourceTree = "<group>"; };
 		D3883F9526FB561D00E4E545 /* Visual Trigonometry.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Visual Trigonometry.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3883F9826FB561D00E4E545 /* Visual_TrigonometryApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Visual_TrigonometryApp.swift; sourceTree = "<group>"; };
 		D3883F9A26FB561D00E4E545 /* MainPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPageView.swift; sourceTree = "<group>"; };
@@ -77,6 +79,7 @@
 				D379FFA92724CC1800C59EEE /* MainViews */,
 				D38F05242710770800A3D171 /* States.swift */,
 				D3983F5D2700E11E00FE35C0 /* SystemsOfElements.swift */,
+				D379FFAA2725E35400C59EEE /* HelpModeView.swift */,
 				D3983F592700E08600FE35C0 /* Errors.swift */,
 				D3983F5B2700E09D00FE35C0 /* Handler.swift */,
 				D3983F572700DFB800FE35C0 /* SimpleElements.swift */,
@@ -167,6 +170,7 @@
 				D3983F5E2700E11E00FE35C0 /* SystemsOfElements.swift in Sources */,
 				D379FFA82724CC0000C59EEE /* SettingsView.swift in Sources */,
 				D3983F5A2700E08600FE35C0 /* Errors.swift in Sources */,
+				D379FFAB2725E35400C59EEE /* HelpModeView.swift in Sources */,
 				D38F05252710770800A3D171 /* States.swift in Sources */,
 				D3DC46EB270B905400BB0797 /* MainPageView.swift in Sources */,
 				D3883F9926FB561D00E4E545 /* Visual_TrigonometryApp.swift in Sources */,

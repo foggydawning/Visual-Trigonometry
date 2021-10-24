@@ -41,12 +41,13 @@ struct SettingsView: View {
     var settings: some View{
         VStack{
             ZStack{
+                Color.white.opacity(0.000001)
                 Capsule()
                     .foregroundColor(Color("Forest"))
                     .frame(width: 40, height: 6)
             }
-                .frame(maxWidth: .infinity, maxHeight: 30)
-                .gesture(dragGesture)
+            .frame(maxWidth: .infinity, maxHeight: 30)
+            .gesture(dragGesture)
                 
             HStack{
                 Spacer().frame(maxWidth: 20)
@@ -57,15 +58,12 @@ struct SettingsView: View {
                     .lineLimit(1)
                 Spacer()
             }
-                .gesture(dragGesture)
+            .gesture(dragGesture)
             
             settingsForm
-            
         }
         .frame(height: currentHeight)
-        .background(Color("Pine")
-                        
-        )
+        .background(Color("Pine"))
         .cornerRadius(15)
         .animation(.spring(), value: isDrugging)
     }
