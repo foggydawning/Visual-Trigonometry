@@ -37,42 +37,49 @@ struct TrigonometryView: View{
                     .opacity(0.6)
                 
                 if states.handledUserInput != nil{
-                    
-                    // angle
-                    Circle(
-                        radius: 17,
-                        center: center,
-                        end: Angle(
-                            degrees: states.handledUserInput!
-                                .degrees
-                                .truncatingRemainder(dividingBy: 360.0)
-                        )
-                    )
-                        .stroke(lineWidth: 4)
-                        .foregroundColor(Color("Lime"))
-                        .opacity(states.helpsLineOpticaly)
-                        .animation(
-                                .spring(response: (states.helpsLineOpticaly == 0) ? 0 : 1.5)
-                                .delay((states.helpsLineOpticaly == 0) ? 0 : 1.7)
-                            ,value: states.helpsLineOpticaly
-                        )
-                    
-                    Radius(center: center)
 
-                    // cosLine
-                    Line(startPoint: center,
-                         lenght: abs(cos(states.handledUserInput!.radians)*mainRadiusLenght),
-                         width: 5)
-                        .foregroundColor(Color("Biscotti"))
+                    // Help Mode
+                    if states.helpModeIsActive{
+                        ZStack{
+                            // 1 text
+                            HStack(alignment: .top){
+                                    Spacer()
+                                        .padding()
+                                        .frame(maxWidth: states.widthOfWorkSpace/2)
+                                    Text("1")
+                                        .fontWeight(.bold)
+                                        .foregroundColor(Color("Stone Wall"))
+                            }
+                                .padding(.bottom)
+                                .rotationEffect(states.handledUserInput!)
+
+                            // cos text
+                            HStack(alignment: .top){
+                                    Spacer()
+                                        .padding()
+                                    .frame(maxWidth: abs(cos(states.handledUserInput!.radians)*mainRadiusLenght)+3.0)
+                                Text("cos")
+                                    .fontWeight(.bold)
+                                    .foregroundColor(Color("Biscotti"))
+                            }
+                                .padding(.bottom)
+                                .rotationEffect(
+                                    (cos(states.handledUserInput!.radians)>=0) ? .zero : .degrees(180)
+                                )
+                        }
+                        .opacity(states.helpsLineOpticaly)
+                    }
+                    
+                    // radisu
+                    Line(startPoint: center, lenght: states.widthOfWorkSpace/2, width: 5)
+                        .foregroundColor(Color("Stone Wall"))
                         .opacity(states.helpsLineOpticaly)
                         .animation(
                                 .spring(response: (states.helpsLineOpticaly == 0) ? 0 : 1.5)
-                                .delay((states.helpsLineOpticaly == 0) ? 0 : 1.7)
-                            ,value: states.helpsLineOpticaly
+                                .delay((states.helpsLineOpticaly == 0) ? 0 : 1.7),
+                                value: states.helpsLineOpticaly
                         )
-                        .rotationEffect(
-                            (cos(states.handledUserInput!.radians)>=0) ? .zero : .degrees(180)
-                        )
+                        .rotationEffect(states.handledUserInput!)
                     
                     // sinLine
                     Line(startPoint: .init(x: center.x + cos(states.handledUserInput!.radians)*mainRadiusLenght,
@@ -93,6 +100,42 @@ struct TrigonometryView: View{
                                 x: (center.x + cos(states.handledUserInput!.radians)*mainRadiusLenght)/states.widthOfWorkSpace,
                                 y: center.y/states.widthOfWorkSpace)
                         )
+                    
+                    // cosLine
+                    Line(startPoint: center,
+                             lenght: abs(cos(states.handledUserInput!.radians)*mainRadiusLenght)+3.0,
+                             width: 5)
+                        .foregroundColor(Color("Biscotti"))
+                        .opacity(states.helpsLineOpticaly)
+                        .animation(
+                                .spring(response: (states.helpsLineOpticaly == 0) ? 0 : 1.5)
+                                .delay((states.helpsLineOpticaly == 0) ? 0 : 1.7),
+                                    value: states.helpsLineOpticaly
+                        )
+                        .rotationEffect(
+                            (cos(states.handledUserInput!.radians)>=0) ? .zero : .degrees(180)
+                        )
+                    
+                    
+                    // angle
+                    Circle(
+                        radius: 17,
+                        center: center,
+                        end: Angle(
+                            degrees: states.handledUserInput!
+                                .degrees
+                                .truncatingRemainder(dividingBy: 360.0)
+                        )
+                    )
+                        .stroke(lineWidth: 4)
+                        .foregroundColor(Color("Lime"))
+                        .opacity(states.helpsLineOpticaly)
+                        .animation(
+                                .spring(response: (states.helpsLineOpticaly == 0) ? 0 : 1.5)
+                                .delay((states.helpsLineOpticaly == 0) ? 0 : 1.7)
+                            ,value: states.helpsLineOpticaly
+                        )
+                    
                     
                     // mainPoint
                     mainPoint()

@@ -101,7 +101,7 @@ struct userTextField: View {
         TextField("Input your angle here",
                   text: $states.userText,
                   onEditingChanged: { (isBegin) in
-            if isBegin == true{
+            if isBegin == true && states.errorString == " "{
                 withAnimation{
                     states.showTrigonometryValues = false
                 }
@@ -244,7 +244,6 @@ struct TrigonometricFuncAndValue: View {
 
 struct SettingsIcon: View{
     @EnvironmentObject var states: States
-    @State private var isClicked: Bool = false
     
     var body: some View{
         if states.showTrigonometryValues{
@@ -252,16 +251,15 @@ struct SettingsIcon: View{
                 Spacer().frame(maxHeight: 20)
                 HStack{
                     Button(action: {
-                        isClicked.toggle()
-                        states.helpModeIsActive.toggle()
+                        states.showSettingsView.toggle()
                     }) {
                         Image(systemName: "gear.circle")
                             .renderingMode(.template)
                             .resizable()
                             .frame(width: 45, height: 45)
                             .foregroundColor(Color("Pine"))
-                            .rotationEffect(isClicked ? .degrees(180) : .zero)
-                            .animation(.spring(), value: isClicked)
+                            .rotationEffect(states.showSettingsView ? .degrees(180) : .zero)
+                            .animation(.spring(), value: states.showSettingsView)
                     }
                     Spacer()
                 }
@@ -269,33 +267,5 @@ struct SettingsIcon: View{
         } else{
             Spacer()
         }
-    }
-}
-
-struct Radius: View{
-    var center: CGPoint
-    @EnvironmentObject var states: States
-    
-    var body: some View{
-        ZStack{
-            if states.helpModeIsActive{
-                HStack(alignment: .top){
-                        Spacer()
-                            .padding()
-                            .frame(maxWidth: states.widthOfWorkSpace/2)
-                        Text("1")
-                }
-                .padding(.bottom)
-            }
-            Line(startPoint: center, lenght: states.widthOfWorkSpace/2, width: 5)
-        }
-            .foregroundColor(Color("Stone Wall"))
-            .opacity(states.helpsLineOpticaly)
-            .animation(
-                    .spring(response: (states.helpsLineOpticaly == 0) ? 0 : 1.5)
-                    .delay((states.helpsLineOpticaly == 0) ? 0 : 1.7),
-                    value: states.helpsLineOpticaly
-            )
-            .rotationEffect(states.handledUserInput!)
     }
 }
