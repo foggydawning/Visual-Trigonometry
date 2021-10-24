@@ -20,96 +20,109 @@ struct TrigonometryView: View{
         states.widthOfWorkSpace/2 - 2
     }
     
+    var trigonometricValues: [String: Double]? {
+        guard let handledUserInput: Angle = states.handledUserInput else {
+            return nil
+        }
+        return [ "cos" : cos(handledUserInput.radians),
+                 "sin" : sin(handledUserInput.radians)]
+    }
+    
     var body: some View{
-        ZStack{
-            CoordunateSystem(size: states.widthOfWorkSpace)
-            
-            // mainCircle
-            Circle(radius: mainRadiusLenght, center: center)
-                .stroke(lineWidth: 5)
-                .foregroundColor(Color("Forest"))
-            
-            //0, 30, 45, 90, 120, 135, 150, 180, ...
-            PointsOnMainCicrle(lenghtOfRadius: states.widthOfWorkSpace/2)
-                .foregroundColor(Color("Forest"))
-                .opacity(0.6)
-            
-            if states.handledUserInput != nil{
+        VStack{
+            Spacer().frame(maxHeight: 80)
+            ZStack{
+                CoordunateSystem(size: states.widthOfWorkSpace)
                 
-                // angle
-                Circle(
-                    radius: 17,
-                    center: center,
-                    end: Angle(
-                        degrees: states.handledUserInput!
-                            .degrees
-                            .truncatingRemainder(dividingBy: 360.0)
-                    )
-                )
-                    .stroke(lineWidth: 4)
-                    .foregroundColor(Color("Lime"))
-                    .opacity(states.helpsLineOpticaly)
-                    .animation(
-                            .spring(response: (states.helpsLineOpticaly == 0) ? 0 : 1.5)
-                            .delay((states.helpsLineOpticaly == 0) ? 0 : 1.7)
-                        ,value: states.helpsLineOpticaly
-                    )
+                // mainCircle
+                Circle(radius: mainRadiusLenght, center: center)
+                    .stroke(lineWidth: 5)
+                    .foregroundColor(Color("Forest"))
                 
-                // radius
-                Line(startPoint: center, lenght: states.widthOfWorkSpace/2, width: 5)
-                    .foregroundColor(Color("Stone Wall"))
-                    .opacity(states.helpsLineOpticaly)
-                    .animation(
-                            .spring(response: (states.helpsLineOpticaly == 0) ? 0 : 1.5)
-                            .delay((states.helpsLineOpticaly == 0) ? 0 : 1.7)
-                        ,value: states.helpsLineOpticaly
-                    )
-                    .rotationEffect(states.handledUserInput!)
-
-                // cosLine
-                Line(startPoint: center,
-                     lenght: abs(cos(states.handledUserInput!.radians)*mainRadiusLenght),
-                     width: 5)
-                    .foregroundColor(Color("Biscotti"))
-                    .opacity(states.helpsLineOpticaly)
-                    .animation(
-                            .spring(response: (states.helpsLineOpticaly == 0) ? 0 : 1.5)
-                            .delay((states.helpsLineOpticaly == 0) ? 0 : 1.7)
-                        ,value: states.helpsLineOpticaly
-                    )
-                    .rotationEffect(
-                        (cos(states.handledUserInput!.radians)>=0) ? .zero : .degrees(180)
-                    )
+                //0, 30, 45, 90, 120, 135, 150, 180, ...
+                PointsOnMainCicrle(lenghtOfRadius: states.widthOfWorkSpace/2)
+                    .foregroundColor(Color("Forest"))
+                    .opacity(0.6)
                 
-                // sinLine
-                Line(startPoint: .init(x: center.x + cos(states.handledUserInput!.radians)*mainRadiusLenght,
-                                       y: center.y),
-                     lenght: abs(sin(states.handledUserInput!.radians)*mainRadiusLenght),
-                     width: 5.5)
+                if trigonometricValues != nil{
                     
-                    .foregroundColor(Color("Honey"))
-                    .opacity(states.helpsLineOpticaly)
-                    .animation(
-                            .spring(response: (states.helpsLineOpticaly == 0) ? 0 : 1.5)
-                            .delay((states.helpsLineOpticaly == 0) ? 0 : 1.7)
-                        ,value: states.helpsLineOpticaly
+                    // radisu
+                    Line(startPoint: center, lenght: states.widthOfWorkSpace/2, width: 5)
+                        .foregroundColor(Color("Stone Wall"))
+                        .opacity(states.helpsLineOpticaly)
+                        .animation(animation, value: states.helpsLineOpticaly)
+                        .rotationEffect(states.handledUserInput!)
+                    
+                    // sinLine
+                    Line(startPoint: .init(x: center.x + trigonometricValues!["cos"]!*mainRadiusLenght,
+                                           y: center.y),
+                         lenght: abs(trigonometricValues!["sin"]!)*mainRadiusLenght,
+                         width: 5.5)
+                        
+                        .foregroundColor(Color("Honey"))
+                        .opacity(states.helpsLineOpticaly)
+                        .animation(animation, value: states.helpsLineOpticaly)
+                        .rotationEffect(
+                            trigonometricValues!["sin"]! >= 0 ? .degrees(90) : .degrees(270),
+                            anchor: .init(
+                                x: (center.x + trigonometricValues!["cos"]!*mainRadiusLenght)/states.widthOfWorkSpace,
+                                y: center.y/states.widthOfWorkSpace)
+                        )
+                    
+                    // cosLine
+                    Line(startPoint: center,
+                             lenght: abs(trigonometricValues!["cos"]!)*mainRadiusLenght+3.0,
+                             width: 5)
+                        .foregroundColor(Color("Biscotti"))
+                        .opacity(states.helpsLineOpticaly)
+                        .animation(animation, value: states.helpsLineOpticaly)
+                        .rotationEffect(
+                            (trigonometricValues!["cos"]!>=0) ? .zero : .degrees(180)
+                        )
+                    
+                    
+                    // angle
+                    Circle(
+                        radius: 17,
+                        center: center,
+                        end: Angle(
+                            degrees: states.handledUserInput!
+                                .degrees
+                                .truncatingRemainder(dividingBy: 360.0)
+                        )
                     )
-                    .rotationEffect(
-                        (sin(states.handledUserInput!.radians)>=0) ? .degrees(90) : .degrees(270),
-                        anchor: .init(
-                            x: (center.x + cos(states.handledUserInput!.radians)*mainRadiusLenght)/states.widthOfWorkSpace,
-                            y: center.y/states.widthOfWorkSpace)
-                    )
-                
-                // mainPoint
-                mainPoint()
-                    .rotationEffect(states.handledUserInput!)
-                    .foregroundColor(Color("Terracotta"))
-                    .animation(.spring(response: 1.5), value: states.handledUserInput)
-            }
-            Circle(radius: 5, center: center)
-                .fill(Color("Forest"))
-        }.frame(height: states.widthOfWorkSpace)
+                        .stroke(lineWidth: 4)
+                        .foregroundColor(Color("Lime"))
+                        .opacity(states.helpsLineOpticaly)
+                        .animation(animation, value: states.helpsLineOpticaly)
+                    
+                    // Help Mode
+                    if states.helpModeIsActive{
+                        HelpModeView(mainRadiusLenght: mainRadiusLenght,
+                                     center: center,
+                                     trigonometricValues: trigonometricValues)
+                    }
+                    
+                    // mainPoint
+                    mainPoint()
+                        .rotationEffect(states.handledUserInput!)
+                        .foregroundColor(Color("Terracotta"))
+                        .animation(.spring(response: 1.5), value: states.handledUserInput)
+                }
+                Circle(radius: 5, center: center)
+                    .fill(Color("Forest"))
+            }.frame(height: states.widthOfWorkSpace)
+            Spacer()
+        }
+        
+        
+        
+    }
+    
+    var animation: Animation{
+        Animation
+            .spring(response: (states.helpsLineOpticaly == 0) ? 0 : 1.5)
+            .delay((states.helpsLineOpticaly == 0) ? 0 : 1.7)
     }
 }
 
@@ -185,9 +198,9 @@ struct TrigonometricValues: View {
             .padding(14)
             .overlay(
                 RoundedRectangle(cornerRadius: 30)
-                    .stroke(Color("Pine"), lineWidth: 3)
+                    .stroke(Color("Pine"), lineWidth: 4)
                 )
-            .transition(.scale)
+            .transition(.opacity)
         }
     }
 }

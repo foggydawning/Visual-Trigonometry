@@ -101,7 +101,7 @@ struct userTextField: View {
         TextField("Input your angle here",
                   text: $states.userText,
                   onEditingChanged: { (isBegin) in
-            if isBegin == true{
+            if isBegin == true && states.errorString == " "{
                 withAnimation{
                     states.showTrigonometryValues = false
                 }
@@ -168,7 +168,7 @@ struct GoButton: View {
                 .foregroundColor(Color("Forest"))
                 .overlay(
                     RoundedRectangle(cornerRadius: 30)
-                        .stroke(Color("Forest"), lineWidth: 3)
+                        .stroke(Color("Forest"), lineWidth: 4)
                 )
         }
         .simultaneousGesture(
@@ -238,6 +238,34 @@ struct TrigonometricFuncAndValue: View {
                     .foregroundColor(Color("Forest"))
                     .lineLimit(1)
             }
+        }
+    }
+}
+
+struct SettingsIcon: View{
+    @EnvironmentObject var states: States
+    
+    var body: some View{
+        if states.showTrigonometryValues{
+            VStack{
+                Spacer().frame(maxHeight: 20)
+                HStack{
+                    Button(action: {
+                        states.showSettingsView.toggle()
+                    }) {
+                        Image(systemName: "gear.circle")
+                            .renderingMode(.template)
+                            .resizable()
+                            .frame(width: 45, height: 45)
+                            .foregroundColor(Color("Pine"))
+                            .rotationEffect(states.showSettingsView ? .degrees(180) : .zero)
+                            .animation(.spring(), value: states.showSettingsView)
+                    }
+                    Spacer()
+                }
+            }.transition(.opacity)
+        } else{
+            Spacer()
         }
     }
 }
