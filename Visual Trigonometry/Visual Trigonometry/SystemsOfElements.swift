@@ -35,15 +35,15 @@ struct TrigonometryView: View{
                 CoordunateSystem(size: states.widthOfWorkSpace)
                 
                 // mainCircle
-                Circle(radius: mainRadiusLenght, center: center)
+                Circle()
                     .stroke(lineWidth: 5)
                     .foregroundColor(Color("Forest"))
-                
+
                 //0, 30, 45, 90, 120, 135, 150, 180, ...
                 PointsOnMainCicrle(lenghtOfRadius: states.widthOfWorkSpace/2)
                     .foregroundColor(Color("Forest"))
                     .opacity(0.6)
-                
+
                 if trigonometricValues != nil{
                     
                     // radisu
@@ -58,7 +58,7 @@ struct TrigonometryView: View{
                                            y: center.y),
                          lenght: abs(trigonometricValues!["sin"]!)*mainRadiusLenght,
                          width: 5.5)
-                        
+
                         .foregroundColor(Color("Honey"))
                         .opacity(states.helpsLineOpticaly)
                         .animation(animation, value: states.helpsLineOpticaly)
@@ -68,7 +68,7 @@ struct TrigonometryView: View{
                                 x: (center.x + trigonometricValues!["cos"]!*mainRadiusLenght)/states.widthOfWorkSpace,
                                 y: center.y/states.widthOfWorkSpace)
                         )
-                    
+
                     // cosLine
                     Line(startPoint: center,
                              lenght: abs(trigonometricValues!["cos"]!)*mainRadiusLenght+3.0,
@@ -79,10 +79,10 @@ struct TrigonometryView: View{
                         .rotationEffect(
                             (trigonometricValues!["cos"]!>=0) ? .zero : .degrees(180)
                         )
-                    
+
                     
                     // angle
-                    Circle(
+                    MainAngle(
                         radius: 17,
                         center: center,
                         end: Angle(
@@ -109,8 +109,10 @@ struct TrigonometryView: View{
                         .foregroundColor(Color("Terracotta"))
                         .animation(.spring(response: 1.5), value: states.handledUserInput)
                 }
-                Circle(radius: 5, center: center)
-                    .fill(Color("Forest"))
+                Circle()
+                    .frame(width: 10, height: 10)
+                    .foregroundColor(Color("Forest"))
+                
             }.frame(height: states.widthOfWorkSpace)
             Spacer()
         }
@@ -136,7 +138,8 @@ struct CoordunateSystem: View {
                 .rotationEffect(Angle(degrees: -90))
             Line(startPoint: CGPoint(x: 0, y: size/2), lenght: size, width: 4)
             Line(startPoint: CGPoint(x: 0, y: size/2), lenght: size, width: 4)
-                .rotation(.degrees(90))
+                .frame(width: size, height: size)
+                .rotationEffect(.degrees(90))
         }.foregroundColor(Color("Forest"))
     }
 }
@@ -161,14 +164,10 @@ struct ErrorString: View {
 
 
 struct AngleTextFieldAndGoButton: View {
-    @EnvironmentObject var states: States
-    
     var body: some View {
         HStack{
             userTextField()
-            GoButton(
-                handledUserInput: $states.handledUserInput,
-                helpsLineOpticaly: $states.helpsLineOpticaly)
+            GoButton()
         }
         
     }

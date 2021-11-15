@@ -59,7 +59,7 @@ struct mainPoint: Shape{
 }
 
 
-struct Circle: Shape {
+struct MainAngle: Shape {
     var radius: CGFloat
     var center: CGPoint
     var start: Angle = Angle(degrees: 0)
@@ -155,9 +155,6 @@ struct Line: Shape {
 
 struct GoButton: View {
     @EnvironmentObject var states: States
-    @Binding var handledUserInput: Angle?
-    @Binding var helpsLineOpticaly: Double
-    
     var body: some View {
         Button(action: {
             
@@ -174,15 +171,15 @@ struct GoButton: View {
         .simultaneousGesture(
         DragGesture(minimumDistance: 0)
             .onChanged({ _ in
-                helpsLineOpticaly = 0
-                handledUserInput = Angle(degrees: 0)
+                states.helpsLineOpticaly = 0
+                states.handledUserInput = Angle(degrees: 0)
             })
             .onEnded({ _ in
                 let handler = Handler(userText: states.userText)
                 handler.handle()
-                handledUserInput = handler.handledUserInput
+                states.handledUserInput = handler.handledUserInput
                 states.errorString = handler.errorString
-                helpsLineOpticaly = 1
+                states.helpsLineOpticaly = 1
             })
         )
     }
