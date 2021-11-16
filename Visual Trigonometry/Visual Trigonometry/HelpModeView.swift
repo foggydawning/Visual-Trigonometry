@@ -29,7 +29,7 @@ struct HelpModeView: View{
                         .animation(animation, value: states.helpsLineOpticaly)
                         .rotationEffect( trigonometricValues!["cos"]! > 0 ? .zero : .degrees(180))
                 }
-                .rotationEffect(states.handledUserInput!)
+                .rotationEffect(states.handledUserInput ?? .degrees(0))
 
                 // cos text
                 HStack{
@@ -81,5 +81,51 @@ struct HelpModeView: View{
         Animation
             .easeInOut(duration: (states.helpsLineOpticaly == 0) ? 0 : 1.5)
             .delay((states.helpsLineOpticaly == 0) ? 0 : 1.7)
+    }
+}
+
+struct LinesOnCoordinateSystem: View {
+    var size: Double
+    var body: some View{
+        ZStack{
+            ZStack{
+                Line(startPoint: CGPoint(x: size*3/4, y: size/2), lenght: 2.5, width: 10)
+                    .frame(width: size, height: size)
+                Line(startPoint: CGPoint(x: size/2+size*(pow(2, 0.5))/4.0, y: size/2), lenght: 2.5, width: 14)
+                    .frame(width: size, height: size)
+            }
+
+            ZStack{
+                Line(startPoint: CGPoint(x: size*3/4, y: size/2), lenght: 2.5, width: 10)
+                    .frame(width: size, height: size)
+                    .rotationEffect(.degrees(90))
+                Line(startPoint: CGPoint(x: size/2+size*(pow(2, 0.5))/4.0, y: size/2), lenght: 2.5, width: 14)
+                    .frame(width: size, height: size)
+                    .rotationEffect(.degrees(90))
+                Line(startPoint: CGPoint(x: size/2+size*(pow(3, 0.5))/4.0, y: size/2), lenght: 2.5, width: 14)
+                    .frame(width: size, height: size)
+                    .rotationEffect(.degrees(90))
+            }
+          
+            ZStack{
+                Line(startPoint: CGPoint(x: size*3/4, y: size/2), lenght: 2.5, width: 10)
+                    .frame(width: size, height: size)
+                    .rotationEffect(.degrees(180))
+                Line(startPoint: CGPoint(x: size/2+size*(pow(2, 0.5))/4.0, y: size/2), lenght: 2.5, width: 14)
+                    .frame(width: size, height: size)
+                    .rotationEffect(.degrees(180))
+                Line(startPoint: CGPoint(x: size/2+size*(pow(3, 0.5))/4.0, y: size/2), lenght: 2.5, width: 14)
+                    .frame(width: size, height: size)
+                    .rotationEffect(.degrees(180))
+            }
+            ZStack{
+                Line(startPoint: CGPoint(x: size*3/4, y: size/2), lenght: 2.5, width: 10)
+                    .frame(width: size, height: size)
+                    .rotationEffect(.degrees(270))
+                Line(startPoint: CGPoint(x: size/2+size*(pow(2, 0.5))/4.0, y: size/2), lenght: 2.5, width: 14)
+                    .frame(width: size, height: size)
+                    .rotationEffect(.degrees(270))
+            }
+        }
     }
 }

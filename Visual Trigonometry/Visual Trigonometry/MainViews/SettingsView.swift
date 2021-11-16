@@ -32,7 +32,7 @@ struct SettingsView: View {
     
     var settingsForm: some View {
         Form{
-            Toggle("Help Mode (Beta)", isOn: $states.helpModeIsActive)
+            Toggle("Help Mode", isOn: $states.helpModeIsActive)
                 .toggleStyle(SwitchToggleStyle(tint: Color("Pine")))
         }
         .onAppear{UITableView.appearance().backgroundColor = .clear}

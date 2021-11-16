@@ -10,7 +10,7 @@ import SwiftUI
 class Handler{
     
     var userText: String
-    private var correctNumbers: String = "-0123456789."
+    private var correctNumbers: String = "-+0123456789."
     
     init(userText: String){
         self.userText = userText.replacingOccurrences(of: ",", with: ".")
@@ -48,6 +48,10 @@ class Handler{
         
         if numberOfSeparatos > 1{
             throw InputTextError.tooManySeparators
+        }
+        
+        guard Double(self.userText) != nil else {
+            throw InputTextError.invalidText
         }
     }
     

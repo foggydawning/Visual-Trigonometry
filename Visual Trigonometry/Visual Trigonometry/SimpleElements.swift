@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Foundation
+
 
 struct PointsOnMainCicrle: Shape{
      
