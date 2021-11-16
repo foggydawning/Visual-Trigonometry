@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Foundation
 
 struct TrigonometryView: View{
     @EnvironmentObject var states: States
@@ -44,6 +43,9 @@ struct TrigonometryView: View{
                     .foregroundColor(Color("Forest"))
                     .opacity(0.6)
 
+                if states.helpModeIsActive{
+                    LinesOnCoordinateSystem(size: states.widthOfWorkSpace)
+                }
                 if trigonometricValues != nil{
                     
                     // radisu
@@ -174,7 +176,7 @@ struct AngleTextFieldAndGoButton: View {
 }
 
 
-struct TrigonometricValues: View {
+struct TrigonometricValuesView: View {
     @EnvironmentObject var states: States
     var body: some View{
         if states.showTrigonometryValues{

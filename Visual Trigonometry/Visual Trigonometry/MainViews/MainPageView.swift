@@ -6,8 +6,6 @@
 //
 
 import SwiftUI
-import Foundation
-
 
 struct MainScreen: View {
     @StateObject var states = States()
@@ -18,7 +16,7 @@ struct MainScreen: View {
                 Spacer(minLength: states.merginFromEdges)
                 VStack(alignment: .center){
                     TrigonometryView()
-                    TrigonometricValues()
+                    TrigonometricValuesView()
                     ErrorString()
                     AngleTextFieldAndGoButton()
                     SettingsIcon()
