@@ -20,6 +20,6 @@ class States: ObservableObject {
                                                 0.84 * UIScreen.main.bounds.width  :
                                                 0.9 * UIScreen.main.bounds.width
     @Published var showTrigonometryValues: Bool = true
-    @Published var helpModeIsActive: Bool = false
+    @Published var helpModeIsActive: Bool = true
     @Published var showSettingsView: Bool = false
 }

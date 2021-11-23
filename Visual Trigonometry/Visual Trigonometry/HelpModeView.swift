@@ -24,7 +24,7 @@ struct HelpModeView: View{
                     Text("1")
                         .fontWeight(.bold)
                         .foregroundColor(Color("Stone Wall"))
-                        .padding(.bottom, 25.0)
+                        .padding(.bottom, 30)
                         .opacity(states.helpsLineOpticaly)
                         .animation(animation, value: states.helpsLineOpticaly)
                         .rotationEffect( trigonometricValues!["cos"]! > 0 ? .zero : .degrees(180))
@@ -38,7 +38,7 @@ struct HelpModeView: View{
                     Text("cos")
                         .fontWeight(.bold)
                         .foregroundColor(Color("Biscotti"))
-                        .padding(.bottom, 25.0)
+                        .padding(.bottom, 35)
                         .opacity(states.helpsLineOpticaly)
                         .animation(animation, value: states.helpsLineOpticaly)
                         .animation(.easeInOut.delay(1), value: states.helpModeIsActive)
@@ -58,7 +58,7 @@ struct HelpModeView: View{
                         Text("sin")
                             .fontWeight(.bold)
                             .foregroundColor(Color("Honey"))
-                            .padding(.bottom, 25.0)
+                            .padding(.bottom, 30)
                             .opacity(states.helpsLineOpticaly)
                             .animation(animation, value: states.helpsLineOpticaly)
                             .animation(.easeInOut.delay(1), value: states.helpModeIsActive)
@@ -84,47 +84,50 @@ struct HelpModeView: View{
     }
 }
 
+struct LinesOnPi3Pi4Pi6: View {
+    let size: Double
+    var radiusLenght: Double {size/2}
+    let lineWidth: Double = 4
+    let degree: Double
+    private struct line: View {
+        var lineWidth: Double
+        var body: some View{
+            RoundedRectangle(cornerRadius: 30).frame(width: lineWidth, height: 15)
+        }
+    }
+    var body: some View{
+        VStack{
+            Spacer()
+            HStack(spacing: 0){
+                Spacer()
+                    .frame(width: radiusLenght*(1 - pow(3, 0.5)/2) - lineWidth/2)
+                if degree == 180 || degree == 90{
+                    Spacer().frame(width: lineWidth)
+                } else {
+                    line(lineWidth: lineWidth)
+                }
+                Spacer()
+                    .frame(width: radiusLenght*((pow(3, 0.5) - pow(2, 0.5))/2) - lineWidth)
+                line(lineWidth: lineWidth)
+                Spacer()
+                    .frame(width: radiusLenght*((pow(2, 0.5) - 1)/2) - lineWidth)
+                line(lineWidth: lineWidth)
+                Spacer()
+            }
+            Spacer()
+        }
+        .rotationEffect(.degrees(degree))
+        
+    }
+}
+
 struct LinesOnCoordinateSystem: View {
-    var size: Double
+    let size: Double
+    let degrees: [Double] = [0,90,180,270]
     var body: some View{
         ZStack{
-            ZStack{
-                Line(startPoint: CGPoint(x: size*3/4, y: size/2), lenght: 2.5, width: 10)
-                    .frame(width: size, height: size)
-                Line(startPoint: CGPoint(x: size/2+size*(pow(2, 0.5))/4.0, y: size/2), lenght: 2.5, width: 14)
-                    .frame(width: size, height: size)
-            }
-
-            ZStack{
-                Line(startPoint: CGPoint(x: size*3/4, y: size/2), lenght: 2.5, width: 10)
-                    .frame(width: size, height: size)
-                    .rotationEffect(.degrees(90))
-                Line(startPoint: CGPoint(x: size/2+size*(pow(2, 0.5))/4.0, y: size/2), lenght: 2.5, width: 14)
-                    .frame(width: size, height: size)
-                    .rotationEffect(.degrees(90))
-                Line(startPoint: CGPoint(x: size/2+size*(pow(3, 0.5))/4.0, y: size/2), lenght: 2.5, width: 14)
-                    .frame(width: size, height: size)
-                    .rotationEffect(.degrees(90))
-            }
-          
-            ZStack{
-                Line(startPoint: CGPoint(x: size*3/4, y: size/2), lenght: 2.5, width: 10)
-                    .frame(width: size, height: size)
-                    .rotationEffect(.degrees(180))
-                Line(startPoint: CGPoint(x: size/2+size*(pow(2, 0.5))/4.0, y: size/2), lenght: 2.5, width: 14)
-                    .frame(width: size, height: size)
-                    .rotationEffect(.degrees(180))
-                Line(startPoint: CGPoint(x: size/2+size*(pow(3, 0.5))/4.0, y: size/2), lenght: 2.5, width: 14)
-                    .frame(width: size, height: size)
-                    .rotationEffect(.degrees(180))
-            }
-            ZStack{
-                Line(startPoint: CGPoint(x: size*3/4, y: size/2), lenght: 2.5, width: 10)
-                    .frame(width: size, height: size)
-                    .rotationEffect(.degrees(270))
-                Line(startPoint: CGPoint(x: size/2+size*(pow(2, 0.5))/4.0, y: size/2), lenght: 2.5, width: 14)
-                    .frame(width: size, height: size)
-                    .rotationEffect(.degrees(270))
+            ForEach(degrees, id: \.self){ degree in
+                LinesOnPi3Pi4Pi6(size: size, degree: degree)
             }
         }
     }

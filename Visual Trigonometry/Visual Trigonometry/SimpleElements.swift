@@ -24,7 +24,7 @@ struct PointsOnMainCicrle: Shape{
     
     func path(in rect: CGRect) -> Path {
         var path = Path()
-        let radius: Double  = 6
+        let radius: Double  = 9
         for angleInDegrees in self.angles{
             let angleInRadians : Double = Angle(degrees: angleInDegrees).radians
             let x: Double = rect.midX + cos(angleInRadians)*lenghtOfRadius
@@ -40,20 +40,6 @@ struct PointsOnMainCicrle: Shape{
                         clockwise: false)
             path.closeSubpath()
         }
-        return path
-    }
-}
-
-
-struct mainPoint: Shape{
-    func path(in rect: CGRect) -> Path {
-        var path = Path()
-        
-        path.addArc(center: CGPoint(x: rect.maxX, y: rect.midY),
-                    radius: 7,
-                    startAngle: .zero,
-                    endAngle: .degrees(360),
-                    clockwise: false)
         return path
     }
 }
@@ -78,18 +64,20 @@ struct MainAngle: Shape {
 
 
 struct Arrow: Shape {
-    var size: Double
-    var endPoint: CGPoint
     
-    var lenght: Double {self.size*0.07}
-    var halfHeight: Double {self.size*0.02}
+    var size: Double
+    var lenght: Double {self.size*0.12}
+    var halfHeight: Double {self.size*0.04}
     
     func path(in rect: CGRect) -> Path {
         var path = Path()
+        var endPoint: CGPoint {.init(x: rect.midX + size*0.06 , y: rect.midY)}
+        var point1: CGPoint {.init(x: endPoint.x - lenght, y: endPoint.y - halfHeight)}
+        var point2: CGPoint {.init(x: endPoint.x - lenght, y: endPoint.y + halfHeight)}
         path.move(to: endPoint)
-        path.addLine(to: CGPoint(x: endPoint.x - lenght, y: endPoint.y - halfHeight))
-        path.addLine(to: CGPoint(x: endPoint.x - lenght, y: endPoint.y + halfHeight))
-        path.addLine(to: endPoint)
+        path.addLine(to: point1)
+        path.addLine(to: point2)
+        path.closeSubpath()
         return path
     }
 }
@@ -127,38 +115,10 @@ struct userTextField: View {
 }
 
 
-/// Create horizontal line as rect
-struct Line: Shape {
-    
-    var startPoint: CGPoint
-    var lenght: Double
-    var width: Double = 3
-    
-    private var halfWidth: Double { width / 2 }
-    
-    func path(in rect: CGRect) -> Path {
-        
-        var lineRect: CGRect {
-            CGRect(x: startPoint.x,
-                   y: startPoint.y - self.halfWidth,
-                   width: lenght,
-                   height: width)
-        }
-        
-        var path = Path()
-        
-        path.addRect(lineRect)
-        return path
-    }
-}
-
-
 struct GoButton: View {
     @EnvironmentObject var states: States
     var body: some View {
-        Button(action: {
-            
-        })  {
+        Button(action: {})  {
             Text("Gooo!")
                 .fontWeight(.bold)
                 .padding(14)
@@ -260,6 +220,7 @@ struct SettingsIcon: View{
                     }
                     Spacer()
                 }
+                Spacer().frame(maxHeight: 20)
             }.transition(.opacity)
         } else{
             Spacer()
